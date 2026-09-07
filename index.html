@@ -10,14 +10,14 @@
 html, body {
   height: 100%;
   font-family: "Noto Serif SC", "STKaiti", "KaiTi", "SimSun", serif;
-  background: #050510;
-  color: #e8e0d0;
+  background: linear-gradient(135deg, #FFF8E7 0%, #FAEBD7 50%, #F5DEB3 100%);
+  color: #5C4033;
   overflow: hidden;
   user-select: none;
   -webkit-user-select: none;
 }
 
-/* ============ 动态星空背景 ============ */
+/* ============ 动态背景 ============ */
 #starfield {
   position: fixed;
   top: 0; left: 0;
@@ -28,24 +28,24 @@ html, body {
   position: fixed;
   border-radius: 50%;
   filter: blur(80px);
-  opacity: 0.3;
+  opacity: 0.25;
   z-index: 0;
   animation: nebulaFloat 20s ease-in-out infinite alternate;
 }
 .nebula-1 {
   width: 400px; height: 400px;
-  background: radial-gradient(circle, #4a2c8a, transparent);
+  background: radial-gradient(circle, #FFB347, transparent);
   top: -100px; left: -100px;
 }
 .nebula-2 {
   width: 350px; height: 350px;
-  background: radial-gradient(circle, #1a4a7a, transparent);
+  background: radial-gradient(circle, #FFD700, transparent);
   bottom: -80px; right: -80px;
   animation-delay: -5s;
 }
 .nebula-3 {
   width: 300px; height: 300px;
-  background: radial-gradient(circle, #7a4a1a, transparent);
+  background: radial-gradient(circle, #FF8C00, transparent);
   top: 40%; left: 60%;
   animation-delay: -10s;
 }
@@ -73,7 +73,7 @@ html, body {
   padding: 16px;
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255,215,0,0.3) transparent;
+  scrollbar-color: rgba(212,165,116,0.5) transparent;
 }
 .view.active { display: flex; animation: viewFadeIn 0.5s ease; }
 @keyframes viewFadeIn {
@@ -81,16 +81,16 @@ html, body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ============ 玻璃拟态卡片基础 ============ */
+/* ============ 玻璃拟态卡片基础（暖色调） ============ */
 .glass-card {
-  background: linear-gradient(135deg, rgba(30, 20, 60, 0.6), rgba(15, 10, 35, 0.7));
+  background: linear-gradient(135deg, rgba(255, 248, 231, 0.9), rgba(250, 235, 215, 0.95));
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 215, 0, 0.15);
+  border: 1px solid rgba(212, 165, 116, 0.4);
   border-radius: 16px;
   box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    0 8px 32px rgba(139, 90, 43, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 /* ============ 首页 ============ */
@@ -102,39 +102,39 @@ html, body {
 .home-title {
   font-size: 38px;
   font-weight: 900;
-  background: linear-gradient(135deg, #ffd700 0%, #ffaa00 50%, #ff8800 100%);
+  background: linear-gradient(135deg, #D2691E 0%, #DAA520 50%, #CD853F 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-shadow: none;
-  filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.4));
+  filter: drop-shadow(0 2px 8px rgba(218, 165, 32, 0.3));
   letter-spacing: 6px;
   margin-bottom: 8px;
   animation: titleGlow 3s ease-in-out infinite alternate;
 }
 @keyframes titleGlow {
-  0% { filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.3)); }
-  100% { filter: drop-shadow(0 0 30px rgba(255, 215, 0, 0.6)); }
+  0% { filter: drop-shadow(0 2px 8px rgba(218, 165, 32, 0.2)); }
+  100% { filter: drop-shadow(0 2px 16px rgba(218, 165, 32, 0.5)); }
 }
 .home-sub {
   font-size: 13px;
-  color: #a090b0;
+  color: #8B7355;
   letter-spacing: 3px;
-  opacity: 0.8;
+  opacity: 0.9;
 }
 .home-divider {
   width: 60%;
   height: 1px;
   margin: 16px auto;
-  background: linear-gradient(90deg, transparent, rgba(255,215,0,0.5), transparent);
+  background: linear-gradient(90deg, transparent, rgba(218,165,32,0.6), transparent);
 }
 .home-count {
   text-align: center;
   font-size: 12px;
-  color: #807090;
+  color: #A0826D;
   margin-top: 8px;
 }
-.home-count b { color: #ffd700; font-weight: bold; }
+.home-count b { color: #D2691E; font-weight: bold; }
 
 /* 玩家等级卡片 */
 .home-lv {
@@ -149,7 +149,7 @@ html, body {
   position: absolute;
   top: 0; left: -100%;
   width: 100%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,215,0,0.05), transparent);
+  background: linear-gradient(90deg, transparent, rgba(218,165,32,0.08), transparent);
   animation: shimmer 3s infinite;
 }
 @keyframes shimmer {
@@ -163,35 +163,35 @@ html, body {
   font-size: 13px;
   margin-bottom: 8px;
 }
-.lv-name { color: #a090b0; }
+.lv-name { color: #8B7355; }
 .lv-lv {
-  color: #ffd700;
+  color: #D2691E;
   font-weight: 900;
   font-size: 15px;
-  text-shadow: 0 0 10px rgba(255,215,0,0.5);
+  text-shadow: 0 0 10px rgba(218,165,32,0.3);
 }
-.lv-bonus { color: #66ccff; font-size: 11px; }
-.lv-exp { margin-left: auto; color: #807090; font-size: 11px; }
+.lv-bonus { color: #CD853F; font-size: 11px; }
+.lv-exp { margin-left: auto; color: #A0826D; font-size: 11px; }
 .lv-bar {
   height: 8px;
-  background: rgba(0,0,0,0.5);
+  background: rgba(139, 90, 43, 0.15);
   border-radius: 4px;
   overflow: hidden;
-  border: 1px solid rgba(255,215,0,0.1);
+  border: 1px solid rgba(218,165,32,0.2);
 }
 .lv-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, #ffd700, #ffaa00, #ff8800);
+  background: linear-gradient(90deg, #DAA520, #D2691E, #CD853F);
   border-radius: 4px;
   transition: width 0.5s ease;
   position: relative;
-  box-shadow: 0 0 10px rgba(255,215,0,0.5);
+  box-shadow: 0 0 10px rgba(218,165,32,0.4);
 }
 .lv-bar-fill::after {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
   animation: barShimmer 2s infinite;
 }
 @keyframes barShimmer {
@@ -199,7 +199,7 @@ html, body {
   100% { transform: translateX(100%); }
 }
 
-/* ============ 按钮 ============ */
+/* ============ 按钮（暖色调） ============ */
 .btn {
   display: block;
   width: 100%;
@@ -208,10 +208,10 @@ html, body {
   font-family: inherit;
   font-weight: bold;
   text-align: center;
-  border: 1px solid rgba(255, 215, 0, 0.25);
+  border: 1px solid rgba(218, 165, 32, 0.5);
   border-radius: 12px;
-  background: linear-gradient(135deg, rgba(50, 35, 70, 0.8), rgba(30, 20, 50, 0.9));
-  color: #d0c0e0;
+  background: linear-gradient(135deg, rgba(255, 248, 231, 0.9), rgba(250, 235, 215, 0.95));
+  color: #8B4513;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   margin-top: 12px;
@@ -219,43 +219,44 @@ html, body {
   position: relative;
   overflow: hidden;
   backdrop-filter: blur(5px);
+  box-shadow: 0 4px 12px rgba(139, 90, 43, 0.1);
 }
 .btn::before {
   content: '';
   position: absolute;
   top: 0; left: -100%;
   width: 100%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
   transition: left 0.5s;
 }
 .btn:hover {
-  background: linear-gradient(135deg, rgba(70, 50, 90, 0.9), rgba(50, 35, 70, 0.95));
-  border-color: rgba(255, 215, 0, 0.5);
-  color: #ffd700;
+  background: linear-gradient(135deg, rgba(255, 240, 200, 0.95), rgba(250, 225, 180, 0.98));
+  border-color: rgba(218, 165, 32, 0.7);
+  color: #D2691E;
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(255, 215, 0, 0.2);
+  box-shadow: 0 8px 20px rgba(218, 165, 32, 0.25);
 }
 .btn:hover::before { left: 100%; }
 .btn:active {
   transform: translateY(0);
-  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(218, 165, 32, 0.15);
 }
 .btn-primary {
-  background: linear-gradient(135deg, #b8860b 0%, #8b6914 50%, #6b4f0f 100%);
-  color: #fff;
+  background: linear-gradient(135deg, #DAA520 0%, #D2691E 50%, #CD853F 100%);
+  color: #FFF8E7;
   font-size: 18px;
   padding: 16px;
-  border: 1px solid rgba(255, 215, 0, 0.6);
+  border: 1px solid rgba(218, 165, 32, 0.8);
   box-shadow:
-    0 4px 20px rgba(184, 134, 11, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    0 4px 20px rgba(218, 165, 32, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  text-shadow: 0 1px 2px rgba(139, 69, 19, 0.5);
 }
 .btn-primary:hover {
-  background: linear-gradient(135deg, #daa520 0%, #b8860b 50%, #8b6914 100%);
+  background: linear-gradient(135deg, #FFD700 0%, #DAA520 50%, #D2691E 100%);
   box-shadow:
-    0 6px 30px rgba(218, 165, 32, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    0 6px 25px rgba(218, 165, 32, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 .btn-row {
   display: grid;
@@ -265,7 +266,7 @@ html, body {
 .btn-row .btn { margin-top: 0; }
 .ach-tip {
   font-size: 10px;
-  color: #66ccff;
+  color: #CD853F;
   display: block;
   margin-top: 3px;
   font-weight: normal;
@@ -278,15 +279,16 @@ html, body {
   align-items: center;
   justify-content: space-between;
   padding: 10px 14px;
-  background: linear-gradient(135deg, rgba(30, 20, 60, 0.5), rgba(15, 10, 35, 0.6));
-  border: 1px solid rgba(255, 215, 0, 0.15);
+  background: linear-gradient(135deg, rgba(255, 248, 231, 0.85), rgba(250, 235, 215, 0.9));
+  border: 1px solid rgba(218, 165, 32, 0.35);
   border-radius: 12px;
   backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(139, 90, 43, 0.1);
 }
 .game-title {
   font-size: 16px;
   font-weight: bold;
-  background: linear-gradient(135deg, #ffd700, #ffaa00);
+  background: linear-gradient(135deg, #D2691E, #DAA520);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -295,10 +297,10 @@ html, body {
 .btn-pause {
   width: 36px;
   height: 36px;
-  border: 1px solid rgba(255, 215, 0, 0.3);
+  border: 1px solid rgba(218, 165, 32, 0.5);
   border-radius: 50%;
-  background: rgba(60, 40, 80, 0.5);
-  color: #ffd700;
+  background: rgba(255, 248, 231, 0.8);
+  color: #D2691E;
   font-size: 14px;
   cursor: pointer;
   display: flex;
@@ -307,8 +309,8 @@ html, body {
   transition: all 0.3s;
 }
 .btn-pause:hover {
-  background: rgba(80, 60, 100, 0.7);
-  box-shadow: 0 0 15px rgba(255,215,0,0.3);
+  background: rgba(255, 240, 200, 0.9);
+  box-shadow: 0 0 15px rgba(218,165,32,0.3);
 }
 
 /* 属性卡片网格 */
@@ -319,33 +321,35 @@ html, body {
   margin-top: 12px;
 }
 .attr-card {
-  background: linear-gradient(135deg, rgba(35, 25, 60, 0.6), rgba(20, 15, 40, 0.7));
-  border: 1px solid rgba(255, 215, 0, 0.12);
+  background: linear-gradient(135deg, rgba(255, 248, 231, 0.85), rgba(250, 235, 215, 0.9));
+  border: 1px solid rgba(218, 165, 32, 0.3);
   border-radius: 12px;
   padding: 10px 12px;
   text-align: center;
   backdrop-filter: blur(5px);
   transition: all 0.3s;
+  box-shadow: 0 2px 8px rgba(139, 90, 43, 0.08);
 }
 .attr-card:hover {
-  border-color: rgba(255, 215, 0, 0.3);
+  border-color: rgba(218, 165, 32, 0.5);
   transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(139, 90, 43, 0.12);
 }
 .attr-name {
   font-size: 11px;
-  color: #9080a0;
+  color: #8B7355;
   margin-bottom: 4px;
   letter-spacing: 1px;
 }
 .attr-name b {
-  color: #ffd700;
+  color: #D2691E;
   font-weight: bold;
 }
 .attr-val {
   font-size: 20px;
   font-weight: 900;
-  color: #fff;
-  text-shadow: 0 0 10px rgba(255,255,255,0.3);
+  color: #5C4033;
+  text-shadow: 0 1px 2px rgba(255,255,255,0.5);
 }
 .attr-val.small { font-size: 15px; }
 
@@ -354,32 +358,36 @@ html, body {
   text-align: center;
   margin-top: 14px;
   padding: 20px 16px;
-  background: linear-gradient(135deg, rgba(50, 30, 80, 0.4), rgba(25, 15, 50, 0.5));
-  border: 1px solid rgba(255, 215, 0, 0.2);
+  background: linear-gradient(135deg, rgba(255, 248, 231, 0.9), rgba(250, 235, 215, 0.95));
+  border: 1px solid rgba(218, 165, 32, 0.4);
   border-radius: 20px;
   position: relative;
   overflow: hidden;
   backdrop-filter: blur(10px);
+  box-shadow: 0 8px 24px rgba(139, 90, 43, 0.15);
 }
 .wuhun-display::before {
   content: '';
   position: absolute;
   top: -50%; left: -50%;
   width: 200%; height: 200%;
-  background: conic-gradient(from 0deg, transparent, rgba(255,215,0,0.05), transparent, rgba(102,204,255,0.05), transparent);
+  background: conic-gradient(from 0deg, transparent, rgba(218,165,32,0.08), transparent, rgba(255,140,0,0.08), transparent);
   animation: rotateBg 10s linear infinite;
 }
 @keyframes rotateBg {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
-.wuhun-ring-container {
+
+/* 武魂图标 */
+.wuhun-icon-container {
   position: relative;
-  width: 100px;
-  height: 100px;
+  width: 90px;
+  height: 90px;
   margin: 0 auto 12px;
+  z-index: 1;
 }
-.wuhun-ring {
+.wuhun-icon-ring {
   position: absolute;
   top: 0; left: 0;
   width: 100%;
@@ -387,72 +395,73 @@ html, body {
   border-radius: 50%;
   animation: ringRotate 4s linear infinite;
 }
-.wuhun-ring::before {
+.wuhun-icon-ring::before {
   content: '';
   position: absolute;
   top: -3px; left: -3px; right: -3px; bottom: -3px;
   border-radius: 50%;
   border: 3px solid transparent;
-  border-top-color: #ffd700;
-  border-right-color: #ff6b9d;
-  border-bottom-color: #66ccff;
+  border-top-color: #DAA520;
+  border-right-color: #FF8C00;
+  border-bottom-color: #D2691E;
   border-left-color: transparent;
-  box-shadow: 0 0 20px rgba(255,215,0,0.3);
+  box-shadow: 0 0 20px rgba(218,165,32,0.3);
 }
-.wuhun-ring-inner {
+.wuhun-icon-bg {
   position: absolute;
-  top: 15%; left: 15%;
-  width: 70%;
-  height: 70%;
+  top: 10%; left: 10%;
+  width: 80%;
+  height: 80%;
   border-radius: 50%;
-  border: 2px solid rgba(255,215,0,0.3);
-  animation: ringRotate 3s linear infinite reverse;
+  background: linear-gradient(135deg, #FFF8E7, #FAEBD7, #F5DEB3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  box-shadow:
+    inset 0 2px 8px rgba(255,255,255,0.8),
+    0 4px 12px rgba(139, 90, 43, 0.2);
+  animation: iconPulse 2s ease-in-out infinite;
 }
-.wuhun-ring-core {
-  position: absolute;
-  top: 30%; left: 30%;
-  width: 40%;
-  height: 40%;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255,215,0,0.4), rgba(255,215,0,0.1));
-  box-shadow: 0 0 30px rgba(255,215,0,0.4);
-  animation: corePulse 2s ease-in-out infinite;
+@keyframes iconPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
 }
-@keyframes corePulse {
-  0%, 100% { transform: scale(1); opacity: 0.8; }
-  50% { transform: scale(1.2); opacity: 1; }
+.wuhun-icon-bg.mutated {
+  background: linear-gradient(135deg, #FFE4E1, #FFF0F5, #FFEFD5);
+  box-shadow:
+    inset 0 2px 8px rgba(255,255,255,0.8),
+    0 0 20px rgba(255, 105, 180, 0.4);
 }
-@keyframes ringRotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
+
 .wuhun-name {
   font-size: 22px;
   font-weight: 900;
-  background: linear-gradient(135deg, #ffd700, #ffaa00, #ff8800);
+  background: linear-gradient(135deg, #D2691E, #DAA520, #CD853F);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-shadow: none;
-  filter: drop-shadow(0 0 10px rgba(255,215,0,0.4));
+  filter: drop-shadow(0 1px 4px rgba(218,165,32,0.3));
   letter-spacing: 2px;
   position: relative;
   z-index: 1;
 }
 .wuhun-name.mutated {
-  background: linear-gradient(135deg, #ff6b9d, #ffd700, #66ccff);
+  background: linear-gradient(135deg, #FF69B4, #DAA520, #FF8C00, #FF69B4);
+  background-size: 300% 300%;
   -webkit-background-clip: text;
   background-clip: text;
-  filter: drop-shadow(0 0 15px rgba(255,107,157,0.5));
-  animation: mutatedGlow 2s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 12px rgba(255,105,180,0.5));
+  animation: mutatedGradient 3s ease infinite;
 }
-@keyframes mutatedGlow {
-  0% { filter: drop-shadow(0 0 10px rgba(255,107,157,0.4)); }
-  100% { filter: drop-shadow(0 0 25px rgba(255,107,157,0.7)); }
+@keyframes mutatedGradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 .wuhun-type {
   font-size: 12px;
-  color: #a090b0;
+  color: #8B7355;
   margin-top: 6px;
   letter-spacing: 2px;
   position: relative;
@@ -460,16 +469,16 @@ html, body {
 }
 .wuhun-level {
   font-size: 11px;
-  color: #66ccff;
+  color: #CD853F;
   margin-top: 4px;
   position: relative;
   z-index: 1;
 }
 .mutated-badge {
   display: inline-block;
-  padding: 2px 8px;
-  background: linear-gradient(135deg, #ff6b9d, #ffd700);
-  color: #000;
+  padding: 2px 10px;
+  background: linear-gradient(135deg, #FF69B4, #DAA520);
+  color: #FFF8E7;
   font-size: 10px;
   font-weight: bold;
   border-radius: 10px;
@@ -478,10 +487,11 @@ html, body {
   position: relative;
   z-index: 1;
   animation: badgePulse 1.5s ease-in-out infinite;
+  box-shadow: 0 2px 8px rgba(255,105,180,0.4);
 }
 @keyframes badgePulse {
-  0%, 100% { box-shadow: 0 0 5px rgba(255,107,157,0.5); }
-  50% { box-shadow: 0 0 15px rgba(255,107,157,0.8); }
+  0%, 100% { box-shadow: 0 2px 8px rgba(255,105,180,0.3); }
+  50% { box-shadow: 0 2px 16px rgba(255,105,180,0.6); }
 }
 
 /* 魂环列表 */
@@ -504,7 +514,7 @@ html, body {
   font-size: 9px;
   font-weight: bold;
   color: #fff;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.6);
   animation: hunhuanPulse 2s ease-in-out infinite;
   position: relative;
 }
@@ -514,12 +524,12 @@ html, body {
   top: -2px; left: -2px; right: -2px; bottom: -2px;
   border-radius: 50%;
   border: 1px solid currentColor;
-  opacity: 0.5;
+  opacity: 0.6;
   animation: hunhuanRotate 3s linear infinite;
 }
 @keyframes hunhuanPulse {
   0%, 100% { box-shadow: 0 0 8px currentColor; transform: scale(1); }
-  50% { box-shadow: 0 0 20px currentColor; transform: scale(1.1); }
+  50% { box-shadow: 0 0 18px currentColor; transform: scale(1.1); }
 }
 @keyframes hunhuanRotate {
   from { transform: rotate(0deg); }
@@ -534,36 +544,32 @@ html, body {
   display: flex;
   justify-content: space-between;
   font-size: 12px;
-  color: #a090b0;
+  color: #8B7355;
   margin-bottom: 6px;
 }
-.progress-label b { color: #ffd700; }
+.progress-label b { color: #D2691E; }
 .progress-bar {
   height: 12px;
-  background: rgba(0,0,0,0.5);
+  background: rgba(139, 90, 43, 0.12);
   border-radius: 6px;
   overflow: hidden;
-  border: 1px solid rgba(255, 215, 0, 0.15);
+  border: 1px solid rgba(218, 165, 32, 0.25);
   position: relative;
 }
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #4a9eff, #66ccff, #88ddff);
+  background: linear-gradient(90deg, #DAA520, #FF8C00, #D2691E);
   border-radius: 6px;
   transition: width 0.3s ease;
   position: relative;
-  box-shadow: 0 0 15px rgba(102,204,255,0.4);
+  box-shadow: 0 0 12px rgba(218,165,32,0.4);
 }
 .progress-fill::after {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
   animation: barShimmer 2s infinite;
-}
-.progress-fill.cult {
-  background: linear-gradient(90deg, #ffd700, #ffaa00, #ff8800);
-  box-shadow: 0 0 15px rgba(255,215,0,0.4);
 }
 
 /* 速度控制 */
@@ -576,44 +582,46 @@ html, body {
 .speed-btn {
   padding: 5px 12px;
   font-size: 11px;
-  border: 1px solid rgba(255,215,0,0.2);
+  border: 1px solid rgba(218,165,32,0.35);
   border-radius: 6px;
-  background: rgba(0,0,0,0.3);
-  color: #807090;
+  background: rgba(255, 248, 231, 0.7);
+  color: #8B7355;
   cursor: pointer;
   font-family: inherit;
   transition: all 0.3s;
 }
 .speed-btn:hover {
-  border-color: rgba(255,215,0,0.4);
-  color: #a090b0;
+  border-color: rgba(218,165,32,0.6);
+  color: #D2691E;
 }
 .speed-btn.active {
-  background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,170,0,0.2));
-  color: #ffd700;
-  border-color: rgba(255,215,0,0.5);
-  box-shadow: 0 0 10px rgba(255,215,0,0.2);
+  background: linear-gradient(135deg, rgba(218,165,32,0.25), rgba(255,140,0,0.2));
+  color: #D2691E;
+  border-color: rgba(218,165,32,0.6);
+  box-shadow: 0 0 10px rgba(218,165,32,0.2);
+  font-weight: bold;
 }
 
 /* ============ 日志 ============ */
 .log-section {
   flex: 1;
   margin-top: 12px;
-  background: linear-gradient(135deg, rgba(10, 5, 25, 0.7), rgba(5, 5, 15, 0.8));
-  border: 1px solid rgba(255, 215, 0, 0.1);
+  background: linear-gradient(135deg, rgba(255, 248, 231, 0.8), rgba(250, 235, 215, 0.85));
+  border: 1px solid rgba(218, 165, 32, 0.25);
   border-radius: 12px;
   padding: 10px 12px;
   overflow-y: auto;
   max-height: 180px;
   min-height: 100px;
   backdrop-filter: blur(5px);
+  box-shadow: inset 0 2px 8px rgba(139, 90, 43, 0.05);
 }
 .log-entry {
   font-size: 11px;
   line-height: 1.7;
   padding: 3px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.03);
-  color: #a090a0;
+  border-bottom: 1px solid rgba(139, 90, 43, 0.06);
+  color: #6B5344;
   animation: logFadeIn 0.3s ease;
 }
 @keyframes logFadeIn {
@@ -621,25 +629,25 @@ html, body {
   to { opacity: 1; transform: translateX(0); }
 }
 .log-entry.breakthrough {
-  color: #ffd700;
+  color: #D2691E;
   font-weight: bold;
-  text-shadow: 0 0 5px rgba(255,215,0,0.3);
+  text-shadow: 0 0 5px rgba(218,165,32,0.2);
 }
-.log-entry.event { color: #66ccff; }
-.log-entry.danger { color: #ff6b6b; }
+.log-entry.event { color: #CD853F; }
+.log-entry.danger { color: #B22222; }
 .log-entry.god {
-  color: #ffd700;
+  color: #DAA520;
   font-weight: bold;
-  text-shadow: 0 0 10px rgba(255,215,0,0.6);
+  text-shadow: 0 0 8px rgba(218,165,32,0.4);
   font-size: 12px;
 }
 .log-entry.mutated {
-  color: #ff6b9d;
+  color: #FF69B4;
   font-weight: bold;
-  text-shadow: 0 0 8px rgba(255,107,157,0.5);
+  text-shadow: 0 0 6px rgba(255,105,180,0.3);
 }
 .log-age {
-  color: #605070;
+  color: #A0826D;
   margin-right: 6px;
   font-size: 10px;
 }
@@ -649,11 +657,11 @@ html, body {
   text-align: center;
   margin-top: 20px;
   padding: 24px 20px;
-  background: linear-gradient(135deg, rgba(40, 25, 70, 0.6), rgba(20, 15, 45, 0.7));
-  border: 1px solid rgba(255, 215, 0, 0.25);
+  background: linear-gradient(135deg, rgba(255, 248, 231, 0.95), rgba(250, 235, 215, 0.98));
+  border: 1px solid rgba(218, 165, 32, 0.5);
   border-radius: 20px;
   backdrop-filter: blur(10px);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  box-shadow: 0 10px 30px rgba(139, 90, 43, 0.2);
 }
 .result-title {
   font-size: 30px;
@@ -662,15 +670,15 @@ html, body {
   letter-spacing: 4px;
 }
 .result-title.success {
-  background: linear-gradient(135deg, #ffd700, #ffaa00, #ff8800);
+  background: linear-gradient(135deg, #D2691E, #DAA520, #FF8C00);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  filter: drop-shadow(0 0 20px rgba(255,215,0,0.5));
+  filter: drop-shadow(0 0 15px rgba(218,165,32,0.4));
   animation: titleGlow 2s ease-in-out infinite alternate;
 }
 .result-title.fail {
-  background: linear-gradient(135deg, #ff6b6b, #cc4444);
+  background: linear-gradient(135deg, #8B4513, #A0522D);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -682,32 +690,32 @@ html, body {
   margin: 20px 0;
 }
 .result-stat {
-  background: rgba(0,0,0,0.3);
+  background: rgba(255, 248, 231, 0.7);
   border-radius: 10px;
   padding: 12px 8px;
-  border: 1px solid rgba(255,215,0,0.1);
+  border: 1px solid rgba(218,165,32,0.2);
 }
-.result-stat-label { font-size: 11px; color: #807090; }
+.result-stat-label { font-size: 11px; color: #8B7355; }
 .result-stat-val {
   font-size: 16px;
   font-weight: bold;
-  color: #ffd700;
+  color: #D2691E;
   margin-top: 4px;
 }
 .result-exp {
-  background: linear-gradient(135deg, rgba(102, 204, 255, 0.1), rgba(102, 204, 255, 0.05));
-  border: 1px solid rgba(102, 204, 255, 0.3);
+  background: linear-gradient(135deg, rgba(218,165,32,0.12), rgba(255,140,0,0.08));
+  border: 1px solid rgba(218, 165, 32, 0.4);
   border-radius: 12px;
   padding: 14px;
   margin: 16px 0;
 }
-.result-exp-label { font-size: 12px; color: #66ccff; }
+.result-exp-label { font-size: 12px; color: #CD853F; }
 .result-exp-val {
   font-size: 26px;
   font-weight: 900;
-  color: #66ccff;
+  color: #D2691E;
   margin-top: 4px;
-  text-shadow: 0 0 15px rgba(102,204,255,0.4);
+  text-shadow: 0 0 12px rgba(218,165,32,0.3);
 }
 
 /* ============ 成就页 ============ */
@@ -723,16 +731,16 @@ html, body {
   align-items: center;
   gap: 12px;
   padding: 12px;
-  background: linear-gradient(135deg, rgba(20, 15, 40, 0.5), rgba(10, 8, 25, 0.6));
-  border: 1px solid rgba(255,255,255,0.05);
+  background: linear-gradient(135deg, rgba(255, 248, 231, 0.7), rgba(250, 235, 215, 0.75));
+  border: 1px solid rgba(139, 90, 43, 0.15);
   border-radius: 12px;
   transition: all 0.3s;
   backdrop-filter: blur(5px);
 }
 .ach-item.unlocked {
-  border-color: rgba(255, 215, 0, 0.4);
-  background: linear-gradient(135deg, rgba(50, 35, 20, 0.5), rgba(30, 20, 40, 0.5));
-  box-shadow: 0 0 15px rgba(255,215,0,0.1);
+  border-color: rgba(218, 165, 32, 0.5);
+  background: linear-gradient(135deg, rgba(255, 240, 200, 0.8), rgba(250, 225, 180, 0.85));
+  box-shadow: 0 0 15px rgba(218,165,32,0.15);
 }
 .ach-icon {
   width: 42px;
@@ -742,27 +750,27 @@ html, body {
   align-items: center;
   justify-content: center;
   font-size: 18px;
-  background: rgba(255,255,255,0.05);
+  background: rgba(139, 90, 43, 0.1);
   flex-shrink: 0;
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(139, 90, 43, 0.15);
 }
 .ach-item.unlocked .ach-icon {
-  background: linear-gradient(135deg, #ffd700, #ffaa00);
-  color: #000;
-  border-color: rgba(255,215,0,0.5);
-  box-shadow: 0 0 15px rgba(255,215,0,0.3);
+  background: linear-gradient(135deg, #DAA520, #D2691E);
+  color: #FFF8E7;
+  border-color: rgba(218,165,32,0.6);
+  box-shadow: 0 0 12px rgba(218,165,32,0.3);
 }
 .ach-info { flex: 1; }
 .ach-name {
   font-size: 13px;
   font-weight: bold;
-  color: #605070;
+  color: #A0826D;
 }
-.ach-item.unlocked .ach-name { color: #ffd700; }
-.ach-desc { font-size: 11px; color: #504060; margin-top: 2px; }
+.ach-item.unlocked .ach-name { color: #D2691E; }
+.ach-desc { font-size: 11px; color: #B8A090; margin-top: 2px; }
 .ach-bonus {
   font-size: 10px;
-  color: #66ccff;
+  color: #CD853F;
   margin-top: 2px;
   opacity: 0.7;
 }
@@ -773,20 +781,21 @@ html, body {
   margin-top: 12px;
   font-size: 12px;
   line-height: 2;
-  color: #b0a0c0;
+  color: #6B5344;
   padding-bottom: 20px;
 }
 .about-content p { margin-bottom: 8px; }
 .about-content b {
-  color: #ffd700;
+  color: #D2691E;
   font-weight: bold;
 }
 .about-content .highlight {
-  background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,107,157,0.1));
-  border-left: 3px solid #ffd700;
+  background: linear-gradient(135deg, rgba(218,165,32,0.1), rgba(255,140,0,0.08));
+  border-left: 3px solid #DAA520;
   padding: 8px 12px;
   border-radius: 0 8px 8px 0;
   margin: 8px 0;
+  color: #8B4513;
 }
 
 /* ============ 弹窗 ============ */
@@ -794,7 +803,7 @@ html, body {
   display: none;
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.8);
+  background: rgba(92, 64, 51, 0.6);
   backdrop-filter: blur(5px);
   z-index: 100;
   align-items: center;
@@ -808,16 +817,16 @@ html, body {
 }
 .modal-overlay.active { display: flex; }
 .modal {
-  background: linear-gradient(135deg, #1a1030, #0f0820);
-  border: 1px solid rgba(255, 215, 0, 0.4);
+  background: linear-gradient(135deg, #FFF8E7, #FAEBD7);
+  border: 1px solid rgba(218, 165, 32, 0.6);
   border-radius: 20px;
   padding: 28px 24px;
   max-width: 360px;
   width: 100%;
   text-align: center;
   box-shadow:
-    0 0 60px rgba(255, 215, 0, 0.2),
-    0 20px 60px rgba(0,0,0,0.6);
+    0 0 50px rgba(218, 165, 32, 0.3),
+    0 20px 50px rgba(139, 90, 43, 0.3);
   position: relative;
   overflow: hidden;
   animation: modalScaleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -831,13 +840,13 @@ html, body {
   position: absolute;
   top: -50%; left: -50%;
   width: 200%; height: 200%;
-  background: conic-gradient(from 0deg, transparent, rgba(255,215,0,0.03), transparent, rgba(255,107,157,0.03), transparent);
+  background: conic-gradient(from 0deg, transparent, rgba(218,165,32,0.06), transparent, rgba(255,140,0,0.06), transparent);
   animation: rotateBg 8s linear infinite;
 }
 .modal-title {
   font-size: 22px;
   font-weight: 900;
-  background: linear-gradient(135deg, #ffd700, #ffaa00);
+  background: linear-gradient(135deg, #D2691E, #DAA520);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -848,37 +857,65 @@ html, body {
 }
 .modal-text {
   font-size: 13px;
-  color: #b0a0c0;
+  color: #6B5344;
   line-height: 1.8;
   margin-bottom: 16px;
   position: relative;
   z-index: 1;
 }
+
+/* 武魂觉醒弹窗图标 */
+.modal-wuhun-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 10px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FFF8E7, #FAEBD7, #F5DEB3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  box-shadow:
+    inset 0 2px 8px rgba(255,255,255,0.8),
+    0 4px 16px rgba(139, 90, 43, 0.2),
+    0 0 30px rgba(218,165,32,0.2);
+  position: relative;
+  z-index: 1;
+  animation: wuhunIconReveal 1s ease;
+}
+.modal-wuhun-icon.mutated {
+  background: linear-gradient(135deg, #FFE4E1, #FFF0F5, #FFEFD5);
+  box-shadow:
+    inset 0 2px 8px rgba(255,255,255,0.8),
+    0 4px 16px rgba(255, 105, 180, 0.3),
+    0 0 30px rgba(255,105,180,0.3);
+}
+@keyframes wuhunIconReveal {
+  0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+  60% { transform: scale(1.2) rotate(10deg); }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
 .modal-wuhun {
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 900;
-  background: linear-gradient(135deg, #ffd700, #ffaa00, #ff8800);
+  background: linear-gradient(135deg, #D2691E, #DAA520, #CD853F);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  filter: drop-shadow(0 0 15px rgba(255,215,0,0.5));
-  margin: 16px 0 8px;
+  filter: drop-shadow(0 0 10px rgba(218,165,32,0.3));
+  margin: 12px 0 6px;
   letter-spacing: 3px;
   position: relative;
   z-index: 1;
   animation: wuhunReveal 1s ease;
 }
 .modal-wuhun.mutated {
-  background: linear-gradient(135deg, #ff6b9d, #ffd700, #66ccff, #ff6b9d);
+  background: linear-gradient(135deg, #FF69B4, #DAA520, #FF8C00, #FF69B4);
   background-size: 300% 300%;
   -webkit-background-clip: text;
   background-clip: text;
-  filter: drop-shadow(0 0 20px rgba(255,107,157,0.6));
+  filter: drop-shadow(0 0 15px rgba(255,105,180,0.5));
   animation: mutatedGradient 3s ease infinite, wuhunReveal 1s ease;
-}
-@keyframes mutatedGradient {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
 }
 @keyframes wuhunReveal {
   0% { transform: scale(0.5); opacity: 0; filter: blur(10px); }
@@ -886,7 +923,7 @@ html, body {
 }
 .modal-wuhun-type {
   font-size: 12px;
-  color: #66ccff;
+  color: #CD853F;
   margin-bottom: 8px;
   letter-spacing: 2px;
   position: relative;
@@ -895,7 +932,7 @@ html, body {
 .mutated-flash {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: radial-gradient(circle, rgba(255,107,157,0.3), transparent);
+  background: radial-gradient(circle, rgba(255,105,180,0.3), transparent);
   animation: flashOut 1s ease-out forwards;
   pointer-events: none;
   z-index: 0;
@@ -909,10 +946,10 @@ html, body {
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255,215,0,0.3);
+  background: rgba(218,165,32,0.4);
   border-radius: 2px;
 }
-::-webkit-scrollbar-thumb:hover { background: rgba(255,215,0,0.5); }
+::-webkit-scrollbar-thumb:hover { background: rgba(218,165,32,0.6); }
 
 /* 粒子效果容器 */
 .particles {
@@ -925,20 +962,21 @@ html, body {
 }
 .particle {
   position: absolute;
-  width: 2px;
-  height: 2px;
-  background: #ffd700;
+  width: 3px;
+  height: 3px;
+  background: #DAA520;
   border-radius: 50%;
   animation: particleFloat linear infinite;
   opacity: 0;
+  box-shadow: 0 0 6px #DAA520;
 }
 @keyframes particleFloat {
   0% {
     transform: translateY(100vh) rotate(0deg);
     opacity: 0;
   }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
+  10% { opacity: 0.8; }
+  90% { opacity: 0.8; }
   100% {
     transform: translateY(-10vh) rotate(360deg);
     opacity: 0;
@@ -948,7 +986,7 @@ html, body {
 </head>
 <body>
 
-<!-- 动态星空背景 -->
+<!-- 动态背景 -->
 <canvas id="starfield"></canvas>
 <div class="nebula nebula-1"></div>
 <div class="nebula nebula-2"></div>
@@ -1010,10 +1048,9 @@ html, body {
     </div>
 
     <div class="wuhun-display">
-      <div class="wuhun-ring-container">
-        <div class="wuhun-ring"></div>
-        <div class="wuhun-ring-inner"></div>
-        <div class="wuhun-ring-core"></div>
+      <div class="wuhun-icon-container">
+        <div class="wuhun-icon-ring"></div>
+        <div class="wuhun-icon-bg" id="wuhun-icon">⚔️</div>
       </div>
       <div class="wuhun-name" id="wuhun-name">--</div>
       <div class="wuhun-type" id="wuhun-type">--</div>
@@ -1076,7 +1113,7 @@ html, body {
     <div class="game-top">
       <div class="game-title">成就殿堂</div>
     </div>
-    <div style="text-align:center; margin-top:14px; font-size:13px; color:#66ccff;">
+    <div style="text-align:center; margin-top:14px; font-size:13px; color:#CD853F;">
       已解锁成就高阶武魂加成：<b id="ach-total-bonus">0%</b>
     </div>
     <div class="ach-list" id="ach-list"></div>
@@ -1098,7 +1135,7 @@ html, body {
         <b>兽武魂：</b>蓝银草→雪域蜘蛛→三眼魔猿→暗魔邪神虎→泰坦巨猿→天青牛蟒→蓝电霸王龙→深海魔鲸王→七彩龙神
       </div>
       <p style="margin-top:12px;"><b>【武魂变异】</b></p>
-      <p>每个武魂在觉醒时有极低概率发生变异，变异后武魂名称改变，属性大幅提升。如：菜刀→斩龙之刃，蓝银草→蓝银皇。变异概率仅约0.8%，可遇不可求！</p>
+      <p>每个武魂在觉醒时有极低概率发生变异（0.8%），变异后武魂名称改变，属性大幅提升。如：菜刀→斩龙之刃，蓝银草→蓝银皇。变异武魂修炼速度×1.5，突破速度更快，经验获取×1.5！</p>
       <p style="margin-top:12px;"><b>【魂师境界】</b></p>
       <p>魂师→大魂师→魂尊→魂宗→魂王→魂帝→魂圣→魂斗罗→封号斗罗→神级，每境10层，共100层。达到神级巅峰可接受神位传承，成神！</p>
       <p style="margin-top:12px;"><b>【魂环系统】</b></p>
@@ -1118,6 +1155,7 @@ html, body {
     <div class="mutated-flash" id="mutated-flash" style="display:none;"></div>
     <div class="modal-title">武魂觉醒</div>
     <div class="modal-text">六岁觉醒仪式开始...</div>
+    <div class="modal-wuhun-icon" id="modal-wuhun-icon">⚔️</div>
     <div class="modal-wuhun" id="modal-wuhun-name">--</div>
     <div class="modal-wuhun-type" id="modal-wuhun-type">--</div>
     <div class="modal-text" id="modal-wuhun-desc"></div>
@@ -1130,21 +1168,24 @@ html, body {
   <div class="modal">
     <div class="modal-title" id="break-modal-title">突破成功</div>
     <div class="modal-text" id="break-modal-text"></div>
-    <button class="btn btn-primary" id="btn-break-continue">继续修炼</button>
   </div>
 </div>
 
 <script>
 /* ============================================================
- * 斗罗大陆 · 魂师修炼模拟器 v2.0
- * 武魂变异系统 · 华丽UI · 完整修炼体系
+ * 斗罗大陆 · 魂师修炼模拟器 v3.0
+ * 暖色调UI · 武魂图标 · 突破弹窗自动关闭
  * ============================================================ */
 
 // ============ 武魂定义 ============
 const WUHUN_QI = ['', '菜刀', '镰刀', '青铜剑', '锻造锤', '七杀剑', '昊天锤', '九宝琉璃塔', '海神三叉戟', '修罗剑'];
 const WUHUN_SHOU = ['', '蓝银草', '雪域蜘蛛', '三眼魔猿', '暗魔邪神虎', '泰坦巨猿', '天青牛蟒', '蓝电霸王龙', '深海魔鲸王', '七彩龙神'];
 
-// 变异武魂（每个武魂对应一个变异形态）
+// 武魂图标（emoji）
+const WUHUN_QI_ICON = ['', '🔪', '⚒️', '🗡️', '🔨', '⚔️', '🔨', '🏯', '🔱', '🗡️'];
+const WUHUN_SHOU_ICON = ['', '🌿', '🕷️', '🦍', '🐯', '🦧', '🐍', '🐲', '🐋', '🐉'];
+
+// 变异武魂
 const WUHUN_QI_MUTATED = ['', '斩龙之刃', '死神之镰', '轩辕剑', '混沌神锤', '诛仙剑', '创世神锤', '万象玲珑塔', '太古海神戟', '鸿蒙圣剑'];
 const WUHUN_SHOU_MUTATED = ['', '蓝银皇', '冰魔蛛皇', '通臂猿猴', '混沌魔虎', '太古巨猿', '青龙', '黄金圣龙', '魔鲸龙神', '创世龙神'];
 
@@ -1157,19 +1198,18 @@ const WUHUN_SHOU_MUTATED_DESC = ['', '蓝银皇，蓝银草的终极形态，万
 const REALMS = ['', '魂师', '大魂师', '魂尊', '魂宗', '魂王', '魂帝', '魂圣', '魂斗罗', '封号斗罗', '神级'];
 const CN_NUM = ['', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十'];
 
-// 魂环颜色（按境界）
-const HUNHUAN_COLORS = ['', '#ffffff', '#ffff00', '#9933ff', '#000000', '#ff0000', '#ff6600', '#ffcc00', '#00ffff', '#ff00ff', '#ffd700'];
+// 魂环颜色
+const HUNHUAN_COLORS = ['', '#ffffff', '#ffff00', '#9933ff', '#333333', '#ff0000', '#ff6600', '#ffcc00', '#00ffff', '#ff00ff', '#DAA520'];
 const HUNHUAN_NAMES = ['', '十年', '百年', '千年', '万年', '十万年', '百万年', '千万年', '亿年', '十亿年', '神级'];
 
-// 武魂基础权重（等级1-9）
+// 武魂基础权重
 const WUHUN_WEIGHTS = [0, 30, 22, 15, 10, 8, 6, 4, 3, 2];
 
-// 修炼系数（武魂等级越高，每年魂力越多）
+// 修炼系数
 const CULT_COEF = [0, 1.0, 1.5, 2.2, 3.2, 4.5, 6.3, 8.8, 12, 16, 22];
-// 变异武魂修炼系数加成
 const MUTATED_CULT_BONUS = 1.5;
 
-// 突破所需年数（行=武魂等级1-9，列=境界段0-9）
+// 突破所需年数
 const BREAK_YEARS = [
   [3, 8, 20, 50, 120, 300, 800, 2000, 5000, 10000],
   [2, 5, 12, 30, 75, 190, 500, 1250, 3125, 6250],
@@ -1182,17 +1222,14 @@ const BREAK_YEARS = [
   [0.08, 0.2, 0.5, 1.2, 3, 7.5, 20, 50, 125, 250]
 ];
 
-// 寿命增加（每突破一个大境界）
 const LIFESPAN_GAIN = [0, 20, 30, 40, 50, 60, 80, 100, 150, 200, 500];
-
-// 变异概率
-const MUTATION_CHANCE = 0.008; // 0.8%
+const MUTATION_CHANCE = 0.008;
 
 // ============ 成就定义 ============
 const ACHIEVEMENTS = [
-  { id: 'wuhun9', name: '天生神级武魂', desc: '觉醒9级武魂', bonus: 0.2, icon: '⚔' },
-  { id: 'wuhun8', name: '顶级武魂', desc: '觉醒8级武魂', bonus: 0.15, icon: '⚔' },
-  { id: 'mutated', name: '武魂变异', desc: '觉醒时触发武魂变异', bonus: 0.5, icon: '🦋' },
+  { id: 'wuhun9', name: '天生神级武魂', desc: '觉醒9级武魂', bonus: 0.2, icon: '⚔️' },
+  { id: 'wuhun8', name: '顶级武魂', desc: '觉醒8级武魂', bonus: 0.15, icon: '🗡️' },
+  { id: 'mutated', name: '武魂变异', desc: '觉醒时触发武魂变异', bonus: 0.5, icon: '✨' },
   { id: 'realm3', name: '魂尊', desc: '达到魂尊境界', bonus: 0.1, icon: '🌟' },
   { id: 'realm5', name: '魂王', desc: '达到魂王境界', bonus: 0.1, icon: '👑' },
   { id: 'realm7', name: '魂圣', desc: '达到魂圣境界', bonus: 0.15, icon: '✨' },
@@ -1201,9 +1238,9 @@ const ACHIEVEMENTS = [
   { id: 'cult1w', name: '万载魂力', desc: '魂力达到10000', bonus: 0.1, icon: '💎' },
   { id: 'cult10w', name: '十万载魂力', desc: '魂力达到100000', bonus: 0.2, icon: '💎' },
   { id: 'cult100w', name: '百万载魂力', desc: '魂力达到1000000', bonus: 0.3, icon: '💎' },
-  { id: 'god', name: '成神', desc: '成功接受神位传承', bonus: 0.5, icon: '🌩' },
-  { id: 'god3', name: '三次成神', desc: '累计成神3次', bonus: 0.3, icon: '🌩' },
-  { id: 'god10', name: '十次成神', desc: '累计成神10次', bonus: 0.5, icon: '🌩' },
+  { id: 'god', name: '成神', desc: '成功接受神位传承', bonus: 0.5, icon: '🌩️' },
+  { id: 'god3', name: '三次成神', desc: '累计成神3次', bonus: 0.3, icon: '🌩️' },
+  { id: 'god10', name: '十次成神', desc: '累计成神10次', bonus: 0.5, icon: '🌩️' },
   { id: 'play10', name: '百炼成钢', desc: '累计修炼10次', bonus: 0.2, icon: '🔥' },
   { id: 'play50', name: '千锤百炼', desc: '累计修炼50次', bonus: 0.5, icon: '🔥' },
   { id: 'event', name: '奇遇连连', desc: '触发10次随机事件', bonus: 0.15, icon: '🎲' }
@@ -1302,15 +1339,15 @@ var godTotalCount = 0;
 // ============ 本地存储 ============
 function savePlayer() {
   try {
-    localStorage.setItem('douluo_player_v2', JSON.stringify(player));
-    localStorage.setItem('douluo_ach_v2', JSON.stringify(unlockedAch));
+    localStorage.setItem('douluo_player_v3', JSON.stringify(player));
+    localStorage.setItem('douluo_ach_v3', JSON.stringify(unlockedAch));
   } catch(e) {}
 }
 function loadPlayer() {
   try {
-    var p = localStorage.getItem('douluo_player_v2');
+    var p = localStorage.getItem('douluo_player_v3');
     if (p) player = JSON.parse(p);
-    var a = localStorage.getItem('douluo_ach_v2');
+    var a = localStorage.getItem('douluo_ach_v3');
     if (a) unlockedAch = JSON.parse(a);
   } catch(e) {}
 }
@@ -1331,7 +1368,6 @@ function drawWuhun() {
   var achBonus = getAchBonus();
   var base = WUHUN_WEIGHTS;
 
-  // 高阶武魂（6-9级）基础概率
   var s15 = 0, s69 = 0;
   for (var i = 1; i <= 5; i++) s15 += base[i];
   for (var i = 6; i <= 9; i++) s69 += base[i];
@@ -1351,12 +1387,12 @@ function drawWuhun() {
     if (r < acc) { level = i; break; }
   }
 
-  // 随机器武魂或兽武魂
   var type = Math.random() < 0.5 ? 'qi' : 'shou';
   var name = type === 'qi' ? WUHUN_QI[level] : WUHUN_SHOU[level];
   var desc = type === 'qi' ? WUHUN_QI_DESC[level] : WUHUN_SHOU_DESC[level];
+  var icon = type === 'qi' ? WUHUN_QI_ICON[level] : WUHUN_SHOU_ICON[level];
 
-  // 武魂变异判定（极低概率）
+  // 武魂变异判定
   var isMutated = Math.random() < MUTATION_CHANCE;
   if (isMutated) {
     name = type === 'qi' ? WUHUN_QI_MUTATED[level] : WUHUN_SHOU_MUTATED[level];
@@ -1368,6 +1404,7 @@ function drawWuhun() {
     type: type,
     name: name,
     desc: desc,
+    icon: icon,
     isMutated: isMutated,
     baseName: type === 'qi' ? WUHUN_QI[level] : WUHUN_SHOU[level]
   };
@@ -1403,6 +1440,7 @@ function initGame() {
     wuhunType: wuhun.type,
     wuhunName: wuhun.name,
     wuhunDesc: wuhun.desc,
+    wuhunIcon: wuhun.icon,
     isMutated: wuhun.isMutated,
     wuhunBaseName: wuhun.baseName,
     lvl: 1,
@@ -1420,6 +1458,10 @@ function initGame() {
   game.maxLifespan = game.lifespan;
 
   // 显示武魂弹窗
+  var modalIcon = document.getElementById('modal-wuhun-icon');
+  modalIcon.textContent = wuhun.icon;
+  modalIcon.className = 'modal-wuhun-icon' + (wuhun.isMutated ? ' mutated' : '');
+
   var modalName = document.getElementById('modal-wuhun-name');
   modalName.textContent = wuhun.name;
   modalName.className = 'modal-wuhun' + (wuhun.isMutated ? ' mutated' : '');
@@ -1427,13 +1469,9 @@ function initGame() {
   document.getElementById('modal-wuhun-type').textContent =
     (wuhun.type === 'qi' ? '器武魂' : '兽武魂') + ' · 等级' + wuhun.level + (wuhun.isMutated ? ' · 变异' : '');
   document.getElementById('modal-wuhun-desc').textContent = wuhun.desc;
-
-  // 变异闪光效果
   document.getElementById('mutated-flash').style.display = wuhun.isMutated ? 'block' : 'none';
-
   document.getElementById('wuhun-modal').classList.add('active');
 
-  // 检查武魂成就
   if (wuhun.level >= 9) unlockAchievement('wuhun9');
   if (wuhun.level >= 8) unlockAchievement('wuhun8');
   if (wuhun.isMutated) unlockAchievement('mutated');
@@ -1445,19 +1483,16 @@ function gameTick() {
 
   game.age++;
 
-  // 魂力增长（变异武魂有加成）
   var cultCoef = CULT_COEF[game.wuhunLevel];
   if (game.isMutated) cultCoef *= MUTATED_CULT_BONUS;
   var cultGain = cultCoef * (1 + game.lvl * 0.05);
   game.cult += cultGain;
 
-  // 突破进度
   var realmIdx = Math.min(Math.floor((game.lvl - 1) / 10), 9);
   var breakYears = BREAK_YEARS[game.wuhunLevel - 1][realmIdx];
-  if (game.isMutated) breakYears *= 0.7; // 变异武魂突破更快
+  if (game.isMutated) breakYears *= 0.7;
   var breakRate = 100 / breakYears;
 
-  // 年龄系数
   var ageCoef = 1.0;
   if (game.age <= 12) ageCoef = 1.3;
   else if (game.age <= 18) ageCoef = 1.15;
@@ -1465,23 +1500,19 @@ function gameTick() {
 
   game.breakProgress += breakRate * ageCoef;
 
-  // 随机事件
   if (Math.random() < 0.15) {
     triggerEvent();
   }
 
-  // 突破判定
   if (game.breakProgress >= 100) {
     doBreakthrough();
   }
 
-  // 死亡判定
   if (game.age >= game.lifespan) {
     gameOver(false);
     return;
   }
 
-  // 神级巅峰成神判定
   if (game.lvl >= 100) {
     tryGodhood();
   }
@@ -1515,6 +1546,7 @@ function doBreakthrough() {
     if (newRealm >= 9) unlockAchievement('realm9');
     if (newRealm >= 10) unlockAchievement('realm10');
 
+    // 突破弹窗0.5秒自动关闭
     showBreakModal('突破大境界！', '恭喜突破【' + REALMS[newRealm] + '】境界！\n获得' + huanName + '魂环\n寿命+' + lifeGain + '年');
   } else {
     addLog('突破至' + getTitle(game.lvl), 'breakthrough');
@@ -1638,6 +1670,10 @@ function updateGameUI() {
   document.getElementById('attr-cult').textContent = fmt(game.cult);
   document.getElementById('attr-life').textContent = game.lifespan;
 
+  var iconEl = document.getElementById('wuhun-icon');
+  iconEl.textContent = game.wuhunIcon;
+  iconEl.className = 'wuhun-icon-bg' + (game.isMutated ? ' mutated' : '');
+
   var wuhunNameEl = document.getElementById('wuhun-name');
   wuhunNameEl.textContent = game.wuhunName;
   wuhunNameEl.className = 'wuhun-name' + (game.isMutated ? ' mutated' : '');
@@ -1645,7 +1681,6 @@ function updateGameUI() {
   document.getElementById('wuhun-type').textContent = game.wuhunType === 'qi' ? '器武魂' : '兽武魂';
   document.getElementById('wuhun-level').textContent = '武魂等级 ' + game.wuhunLevel + ' / 9' + (game.isMutated ? ' · 变异形态' : '');
 
-  // 变异徽章
   var badgeContainer = document.getElementById('mutated-badge-container');
   if (game.isMutated) {
     badgeContainer.innerHTML = '<div class="mutated-badge">变异武魂</div>';
@@ -1653,7 +1688,6 @@ function updateGameUI() {
     badgeContainer.innerHTML = '';
   }
 
-  // 魂环
   var huanHtml = '';
   game.hunhuan.forEach(function(h) {
     huanHtml += '<div class="hunhuan" style="background:' + h.color + ';color:' + h.color + ';" title="' + h.name + '"></div>';
@@ -1680,11 +1714,18 @@ function showView(id) {
   document.getElementById(id).classList.add('active');
 }
 
+// ============ 突破弹窗（0.5秒自动关闭） ============
 function showBreakModal(title, text) {
   document.getElementById('break-modal-title').textContent = title;
   document.getElementById('break-modal-text').textContent = text;
   document.getElementById('break-modal').classList.add('active');
   isPaused = true;
+
+  // 0.5秒后自动关闭
+  setTimeout(function() {
+    document.getElementById('break-modal').classList.remove('active');
+    isPaused = false;
+  }, 500);
 }
 
 // ============ 成就页 ============
@@ -1731,15 +1772,15 @@ function initStarfield() {
   resize();
   window.addEventListener('resize', resize);
 
-  // 创建星星
-  for (var i = 0; i < 150; i++) {
+  for (var i = 0; i < 100; i++) {
     stars.push({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
       size: Math.random() * 1.5 + 0.5,
       speed: Math.random() * 0.3 + 0.1,
       opacity: Math.random() * 0.5 + 0.3,
-      twinkleSpeed: Math.random() * 0.02 + 0.01
+      twinkleSpeed: Math.random() * 0.02 + 0.01,
+      color: Math.random() < 0.7 ? '#DAA520' : '#FF8C00'
     });
   }
 
@@ -1751,8 +1792,10 @@ function initStarfield() {
 
       ctx.beginPath();
       ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(255, 255, 255, ' + star.opacity + ')';
+      ctx.fillStyle = star.color;
+      ctx.globalAlpha = star.opacity;
       ctx.fill();
+      ctx.globalAlpha = 1;
 
       star.y -= star.speed;
       if (star.y < 0) {
@@ -1768,15 +1811,15 @@ function initStarfield() {
 // ============ 浮动粒子 ============
 function initParticles() {
   var container = document.getElementById('particles');
-  var colors = ['#ffd700', '#66ccff', '#ff6b9d', '#aaffaa'];
-  for (var i = 0; i < 20; i++) {
+  var colors = ['#DAA520', '#FF8C00', '#D2691E', '#CD853F'];
+  for (var i = 0; i < 15; i++) {
     var particle = document.createElement('div');
     particle.className = 'particle';
     particle.style.left = Math.random() * 100 + '%';
     particle.style.background = colors[Math.floor(Math.random() * colors.length)];
     particle.style.animationDuration = (Math.random() * 15 + 10) + 's';
     particle.style.animationDelay = (Math.random() * 10) + 's';
-    particle.style.width = particle.style.height = (Math.random() * 3 + 1) + 'px';
+    particle.style.width = particle.style.height = (Math.random() * 3 + 2) + 'px';
     container.appendChild(particle);
   }
 }
@@ -1797,11 +1840,6 @@ function bindEvents() {
     }
     updateGameUI();
     startGameLoop();
-  });
-
-  document.getElementById('btn-break-continue').addEventListener('click', function() {
-    document.getElementById('break-modal').classList.remove('active');
-    isPaused = false;
   });
 
   document.getElementById('btn-pause').addEventListener('click', function() {
