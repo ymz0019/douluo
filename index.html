@@ -5,7 +5,592 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="format-detection" content="telephone=no">
   <title>渡劫模拟器</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+/* ============================================================
+ * 渡劫模拟器 · 样式（移动优先，兼容电脑 480px 容器）
+ * 主题：米白仙韵 + 淡金点缀（白色系修仙画风）
+ * ============================================================ */
+[hidden] { display: none !important; }
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body {
+  margin: 0; padding: 0;
+  background: #f2ecdf;
+  color: #3e3a31;
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  min-height: 100%;
+}
+#app {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #fdfbf5 0%, #f6f1e5 45%, #f0eadb 100%);
+  position: relative;
+}
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 50%;
+  width: 480px; max-width: 100%;
+  height: 100%;
+  transform: translateX(-50%);
+  background:
+    radial-gradient(1.5px 1.5px at 20% 15%, rgba(184,149,72,.35), transparent),
+    radial-gradient(1px 1px at 80% 30%, rgba(184,149,72,.28), transparent),
+    radial-gradient(1px 1px at 45% 65%, rgba(150,140,110,.2), transparent),
+    radial-gradient(1.5px 1.5px at 70% 80%, rgba(184,149,72,.3), transparent),
+    radial-gradient(1px 1px at 15% 85%, rgba(150,140,110,.2), transparent);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.view {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px 16px calc(28px + env(safe-area-inset-bottom));
+}
+
+/* ---------- 按钮 ---------- */
+.btn {
+  border: 1px solid #dccfae;
+  background: linear-gradient(180deg, #fffdf8, #f4eedd);
+  color: #4a453a;
+  border-radius: 10px;
+  padding: 11px 20px;
+  font-size: 15px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 1px 3px rgba(120,100,60,.08);
+}
+.btn:active { transform: scale(.97); filter: brightness(.96); }
+.btn-primary {
+  border: 1px solid #b89548;
+  background: linear-gradient(180deg, #e8cd82, #bd9a4e);
+  color: #4a360f;
+  font-weight: 700;
+  box-shadow: 0 2px 8px rgba(184,149,72,.3);
+}
+.btn-big { width: 100%; padding: 14px 20px; font-size: 17px; border-radius: 12px; }
+.btn-danger { border-color: #d9a29a; color: #b05348; }
+.btn-back {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  border: 1px solid #dccfae;
+  background: linear-gradient(180deg, #fffdf8, #f4eedd);
+  color: #6a6455;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------- 首页（紧凑，无滚动条，为二维码留空间） ---------- */
+#view-home { justify-content: center; gap: 12px; }
+.home-hero { text-align: center; margin-top: -16px; }
+.home-title {
+  margin: 0;
+  font-size: 34px;
+  letter-spacing: 4px;
+  background: linear-gradient(180deg, #e6cf8f, #a8863d 62%, #6f5620);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 2px 14px rgba(184,149,72,.25);
+}
+.home-sub { color: #8f897a; font-size: 13px; margin-top: 4px; letter-spacing: 1px; }
+.home-count {
+  background: rgba(184,149,72,.1);
+  border: 1px solid rgba(184,149,72,.3);
+  border-radius: 20px;
+  padding: 8px 14px;
+  color: #a07f35;
+  font-size: 12px;
+  white-space: nowrap;   /* 玩过/成仙人数不换行，缩小字体 */
+}
+.home-count b { font-size: 13px; }
+.home-lv {
+  width: 100%;
+  background: rgba(255,253,248,.9);
+  border: 1px solid #e2d9c2;
+  border-radius: 12px;
+  padding: 12px 16px;
+  box-shadow: 0 1px 4px rgba(120,100,60,.07);
+}
+.lv-head { display: flex; align-items: center; gap: 8px; }
+.lv-name { color: #8f897a; font-size: 13px; }
+.lv-lv { color: #8a6d2f; font-size: 16px; font-weight: 700; }
+.lv-bonus { color: #c07a3e; font-size: 11px; white-space: nowrap; margin-left: 4px; }
+.lv-exp { margin-left: auto; color: #9a958a; font-size: 12px; }
+.lv-bar { height: 10px; background: #ede6d2; border-radius: 5px; overflow: hidden; margin-top: 8px; }
+.lv-bar-fill { height: 100%; background: linear-gradient(90deg, #8fbf62, #c3e0a1); border-radius: 5px; width: 0%; transition: width .3s; }
+.home-btns { width: 100%; display: flex; flex-direction: column; gap: 12px; }
+.home-link-btns { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.settings-body { width: 100%; padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+.set-card { background: rgba(255,253,248,.9); border: 1px solid #e2d9c2; border-radius: 12px; padding: 12px 14px; }
+.set-card .set-row { justify-content: space-between; }
+.set-card .speed-label { margin-bottom: 4px; }
+.about-body { width: 100%; padding: 14px; }
+.about-text {
+  background: rgba(255,253,248,.9);
+  border: 1px solid #e2d9c2;
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 14px;
+  line-height: 2;
+  color: #55514a;
+}
+.about-text b { color: #8a6d2f; }
+.home-sound { width: 100%; display: flex; justify-content: center; margin-top: 4px; }
+.btn-sound {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  border: 1px solid #dccfae;
+  background: linear-gradient(180deg, #fffdf8, #f4eedd);
+  color: #6a6455;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.btn-sound:active { transform: scale(.92); filter: brightness(.96); }
+.home-speed {
+  width: 100%;
+  max-width: 260px;
+  background: rgba(255,253,248,.9);
+  border: 1px solid #e2d9c2;
+  border-radius: 12px;
+  padding: 8px 14px;
+}
+.speed-label { display: flex; justify-content: space-between; align-items: center; color: #8f897a; font-size: 13px; }
+.speed-label b { color: #a07f35; }
+.speed-range { width: 100%; margin-top: 6px; accent-color: #b89548; }
+.home-tip {
+  width: 100%;
+  background: rgba(255,253,248,.85);
+  border: 1px solid #e6decb;
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-top: 4px;
+}
+.tip-title { color: #a07f35; font-size: 13px; margin-bottom: 6px; letter-spacing: 2px; text-align: center; }
+.tip-text { color: #8f897a; font-size: 12px; line-height: 1.8; text-align: left; }
+.qr-area { width: 100%; text-align: center; margin-top: 10px; }
+.qr-text { color: #9a958a; font-size: 12.5px; margin-bottom: 6px; }
+.qr-img { width: 132px; height: 132px; border-radius: 10px; background: #fff; padding: 5px; }
+
+/* ---------- 开关 ---------- */
+.set-row { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.set-label { font-size: 15px; color: #55514a; }
+.set-switch { position: relative; display: inline-block; width: 48px; height: 26px; }
+.set-switch input { opacity: 0; width: 0; height: 0; }
+.track {
+  position: absolute; inset: 0;
+  background: #e8e1cd;
+  border: 1px solid #d9cfb4;
+  border-radius: 13px;
+  transition: background .2s;
+}
+.track::after {
+  content: '';
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: #a8a294;
+  transition: transform .2s, background .2s;
+}
+.set-switch input:checked + .track { background: #c2a25a; border-color: #b89548; }
+.set-switch input:checked + .track::after { transform: translateX(22px); background: #fff; }
+
+/* ---------- 游戏 ---------- */
+#view-game { padding-top: 0; padding-bottom: 20px; }
+.game-top {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 14px 8px 6px;
+}
+.game-title {
+  font-size: 20px;
+  letter-spacing: 4px;
+  color: #8a6d2f;
+  font-weight: 700;
+}
+.btn-pause {
+  position: absolute;
+  right: 4px; top: 12px;
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  border: 1px solid #dccfae;
+  background: linear-gradient(180deg, #fffdf8, #f4eedd);
+  color: #6a6455;
+  font-size: 17px;
+  cursor: pointer;
+}
+.btn-pause:active { transform: scale(.94); }
+
+.attr-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 8px;
+}
+.attr-card {
+  background: linear-gradient(180deg, #fffdf8, #f6f0e0);
+  border: 1px solid #e2d9c2;
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  box-shadow: 0 1px 3px rgba(120,100,60,.07);
+}
+.attr-name { color: #8f897a; font-size: 12px; letter-spacing: 1px; }
+.attr-rank { color: #a07f35; font-weight: 700; font-size: 12.5px; }
+.attr-val { color: #6f5620; font-size: 26px; font-weight: 700; }
+.attr-sub { color: #a09b8f; font-size: 12px; }
+.attr-wuhun { grid-column: 1 / -1; }
+.attr-wuhun-name { color: #6f5620; font-size: 18px; font-weight: 700; letter-spacing: 1px; }
+.attr-innate-line { color: #a07f35; font-size: 13px; margin-top: 2px; }
+.attr-innate-line b { color: #c07a3e; }
+
+.log-box {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  background: rgba(255,253,248,.75);
+  border: 1px solid #e2d9c2;
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  -webkit-overflow-scrolling: touch;
+}
+.log-item {
+  font-size: 13.5px;
+  line-height: 1.5;
+  padding: 7px 10px;
+  border-radius: 8px;
+  background: rgba(246,240,224,.7);
+  color: #55514a;
+}
+.log-item.year{ background: rgba(246,240,224,.4); color: #9a958a; font-size: 12.5px; }
+.log-item.brk { background: rgba(116,191,105,.16); border: 1px solid rgba(91,159,80,.4); color: #3d7a33; }
+.log-item.gain { background: rgba(116,191,105,.16); border: 1px solid rgba(91,159,80,.4); color: #3d7a33; }
+.log-item.ev1 { background: rgba(110,150,220,.13); border: 1px solid rgba(96,130,200,.32); color: #27539c; }
+.log-item.ev2 { background: rgba(180,120,220,.13); border: 1px solid rgba(160,100,200,.35); color: #7a2fb5; }
+.log-item.ev3 { background: rgba(212,175,55,.15); border: 1px solid rgba(184,149,72,.42); color: #8a6d2f; }
+.log-item.ev4 { background: rgba(230,80,80,.14); border: 1px solid rgba(210,70,70,.45); color: #c0392b; }
+.log-item.rare{ background: rgba(240,150,80,.15); border: 1px solid rgba(220,130,60,.38); color: #c2601a; }
+.log-item.red {
+  background: rgba(230,60,60,.14);
+  border: 1px solid rgba(210,60,60,.5);
+  color: #c0392b;
+  font-weight: 700;
+}
+.log-item.rainbow {
+  background: linear-gradient(90deg, rgba(220,90,90,.2), rgba(220,180,70,.2), rgba(110,190,110,.2), rgba(90,150,220,.2), rgba(170,110,220,.2));
+  background-size: 400% 100%;
+  border: 1px solid rgba(184,149,72,.5);
+  color: #4a453a;
+  font-weight: 700;
+  animation: rainbowShift 1.2s linear infinite;
+}
+@keyframes rainbowShift { 0% { background-position: 0% 0; } 100% { background-position: 400% 0; } }
+.log-item.god { background: rgba(226,192,110,.18); border: 1px solid rgba(184,149,72,.5); color: #7d6430; font-weight: 700; }
+.log-item.dead{ background: rgba(180,70,60,.13); border: 1px solid rgba(170,60,50,.42); color: #b23a2f; }
+
+/* ---------- 结算（紧凑，无滚动条） ---------- */
+#view-settle { justify-content: center; padding-top: 8px; padding-bottom: 8px; }
+.settle-box {
+  width: 100%;
+  background: rgba(255,253,248,.92);
+  border: 1px solid #e2d9c2;
+  border-radius: 16px;
+  padding: 18px 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 3px 16px rgba(120,100,60,.12);
+}
+.settle-title { text-align: center; font-size: 22px; font-weight: 700; color: #6f5620; }
+.settle-title.god { color: #8a6d2f; text-shadow: 0 0 18px rgba(184,149,72,.5); }
+.settle-wuhun { text-align: center; color: #8f897a; font-size: 13.5px; }
+.settle-wuhun b { color: #c2601a; }
+.settle-rows { display: flex; flex-direction: column; }
+.s-row {
+  display: flex; justify-content: space-between;
+  padding: 6px 4px;
+  border-bottom: 1px dashed #e0d7bd;
+  font-size: 14px;
+}
+.s-row:last-child { border-bottom: none; }
+.s-row span { color: #8f897a; }
+.s-row b { color: #4a453a; }
+.settle-god {
+  text-align: center;
+  font-size: 14px;
+  color: #7d6430;
+  background: linear-gradient(180deg, rgba(226,192,110,.22), rgba(226,192,110,.1));
+  border: 1px solid rgba(184,149,72,.5);
+  border-radius: 10px;
+  padding: 10px;
+  letter-spacing: 1px;
+}
+.settle-xinwu { font-size: 12.5px; color: #c2601a; line-height: 1.6; text-align: center; }
+.settle-rank {
+  background: rgba(184,149,72,.1);
+  border: 1px solid rgba(184,149,72,.3);
+  border-radius: 10px;
+  padding: 7px;
+  color: #a07f35;
+  font-size: 13px;
+  text-align: center;
+  line-height: 1.5;
+}
+.settle-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 2px; }
+.settle-btns .btn-big { padding: 11px 6px; font-size: 15px; border-radius: 10px; }
+
+/* ---------- 排行榜（页头 + 三层 tab + 卡片式列表） ---------- */
+.page-view { padding: 0 !important; }
+.page-head {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 14px 10px;
+  background: #fbf7ee;
+  border-bottom: 1px solid #e2d9c2;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+.page-title { flex: 1; text-align: center; font-size: 19px; color: #a07f35; margin: 0; letter-spacing: 2px; }
+.btn-close {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  border: 1px solid #dccfae;
+  background: #f6f0e0;
+  color: #9a958a;
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  flex: none;
+}
+.btn-close:active { transform: scale(.92); }
+.tabs { display: flex; gap: 8px; padding: 10px 14px 4px; width: 100%; }
+.tabs-small { padding-top: 4px; }
+.tabs-small .tab { font-size: 12px; padding: 6px 0; }
+.tab {
+  flex: 1;
+  border: none;
+  border-radius: 9px;
+  padding: 8px 0;
+  background: #f1ead8;
+  color: #8f897a;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.tab.active { background: linear-gradient(180deg, #e8cd82, #bd9a4e); color: #4a360f; }
+.lb-note { padding: 6px 14px 0; font-size: 12px; color: #a07f35; width: 100%; }
+.lb-body { padding: 8px 14px 30px; width: 100%; }
+.lb-tip { text-align: center; color: #a09b8f; padding: 30px 0; font-size: 14px; }
+.lb-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fffdf8;
+  border: 1px solid #e4ddcb;
+  border-radius: 10px;
+  padding: 8px 10px;
+  margin-bottom: 6px;
+}
+.lb-row.me { box-shadow: 0 0 0 2px #b89548 inset; background: rgba(184,149,72,.12); }
+.lb-rank {
+  flex: none;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: #eee7d3;
+  color: #8f897a;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 26px;
+}
+.lb-rank.top { background: #e08835; color: #fff; }
+.lb-rank.top.r1 { background: #e05a4a; }
+.lb-rank.top.r2 { background: #e0943c; }
+.lb-rank.top.r3 { background: #d9b54a; }
+.lb-user { flex: 1; display: flex; align-items: center; gap: 8px; min-width: 0; }
+.lb-avatar { width: 28px; height: 28px; border-radius: 50%; flex: none; }
+.lb-name { font-size: 14px; color: #4a453a; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lb-score { font-size: 15px; font-weight: 700; color: #8a6d2f; flex: none; white-space: nowrap; }
+.lb-time { font-size: 11px; color: #a09b8f; flex: none; }
+
+/* ---------- 暂停遮罩 ---------- */
+.mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(92,78,50,.45);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mask-box {
+  width: 300px;
+  max-width: 86vw;
+  background: #fffdf8;
+  border: 1px solid #e2d9c2;
+  border-radius: 16px;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 8px 40px rgba(90,70,30,.25);
+}
+.mask-title { text-align: center; font-size: 20px; color: #a07f35; font-weight: 700; letter-spacing: 2px; }
+.mask-info { text-align: center; color: #8f897a; font-size: 13px; }
+.mask-box .set-row { justify-content: center; padding: 4px 0; }
+.review-box { width: 320px; max-width: 88vw; max-height: 80vh; }
+.review-log {
+  flex: 1;
+  min-height: 200px;
+  max-height: 55vh;
+  overflow-y: auto;
+  background: rgba(255,253,248,.75);
+  border: 1px solid #e2d9c2;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: #55514a;
+  -webkit-overflow-scrolling: touch;
+}
+.review-log .rv-brk { color: #3d7a33; }
+.review-log .rv-gain { color: #3d7a33; }
+.review-log .rv-ev1 { color: #27539c; }
+.review-log .rv-ev2 { color: #7a2fb5; }
+.review-log .rv-ev3 { color: #8a6d2f; }
+.review-log .rv-ev4 { color: #c0392b; }
+.review-log .rv-god { color: #8a6d2f; font-weight: 700; }
+.review-log .rv-dead { color: #b23a2f; }
+.review-log .rv-rare { color: #c2601a; }
+.review-log .rv-red { color: #c0392b; font-weight: 700; }
+.review-log .rv-rainbow {
+  background: linear-gradient(90deg, #d05a4a, #d9a63a, #6fae54, #4a7ac4, #9a5ac4);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
+}
+.review-log .rv-year { color: #9a958a; }
+
+/* ---------- 电脑端 ---------- */
+@media (min-width: 520px) {
+  body { background: #eae2cf; }
+}
+
+/* 滚动条美化 */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-thumb { background: #cdc0a0; border-radius: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* ---------- 高阶天赋增益（点赞/投币/关注） ---------- */
+.btn-follow {
+  border-color: #b89548;
+  color: #a07f35;
+  margin-bottom: 12px;
+  font-size: 14px;
+  padding: 12px 16px;
+}
+.follow-box { width: 320px; max-width: 88vw; }
+.follow-rows { display: flex; flex-direction: column; gap: 10px; }
+.follow-action { display: flex; justify-content: space-between; align-items: center; text-align: left; padding: 13px 16px; font-size: 14px; }
+.fb-state { font-size: 13px; }
+.fb-state.done { color: #4d9a44; }
+.fb-state.todo { color: #a8a294; }
+.fb-total { font-size: 15px; color: #a07f35; font-weight: 700; }
+
+/* ---------- 成就系统 ---------- */
+.home-ach-row { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 6px; }
+.ach-tip { text-align: center; color: #a07f35; font-size: 12px; margin-bottom: 12px; }
+.ach-total {
+  text-align: center; color: #a07f35; font-size: 16px; font-weight: 700;
+  margin: 6px 14px 10px; padding: 9px;
+  width: calc(100% - 28px);
+  background: rgba(184,149,72,.1);
+  border: 1px solid rgba(184,149,72,.3);
+  border-radius: 12px;
+}
+.ach-list {
+  display: flex; flex-direction: column; gap: 14px;
+  padding: 6px 16px 30px;
+  width: 100%;
+  max-height: calc(100vh - 140px);
+  overflow-y: auto;
+}
+.ach-list::-webkit-scrollbar { width: 6px; }
+.ach-list::-webkit-scrollbar-thumb { background: #cdb26a; border-radius: 3px; }
+.ach-list::-webkit-scrollbar-track { background: #f1ead8; border-radius: 3px; }
+.ach-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #e2d9c2;
+  border-radius: 14px;
+  padding: 16px 18px;
+  background: linear-gradient(180deg, #fffdf8, #f6f0e0);
+  box-shadow: 0 2px 8px rgba(120,100,60,.08);
+}
+.ach-item.done { border-color: #c2a25a; background: linear-gradient(180deg, #faf3df, #f2e7c8); box-shadow: 0 2px 12px rgba(184,149,72,.2); }
+.ach-name { font-size: 17px; font-weight: 700; letter-spacing: 1px; }
+.ach-item.done .ach-name { color: #8a6d2f; }
+.ach-item.todo .ach-name { color: #8f897a; }
+.ach-bonus { font-size: 13px; white-space: nowrap; }
+.ach-item.done .ach-bonus { color: #4d9a44; }
+.ach-item.todo .ach-bonus { color: #b0aa9c; }
+
+/* ---------- 成就达成面包屑提示 ---------- */
+.ach-toast {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 99;
+  text-align: center;
+  padding: 12px 16px;
+  background: linear-gradient(180deg, #e8cd82, #bd9a4e);
+  color: #4a360f;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  transform: translateY(-100%);
+  transition: transform .35s ease;
+  box-shadow: 0 4px 16px rgba(120,90,30,.25);
+}
+.ach-toast.show { transform: translateY(0); }
+
+/* 成就按钮：标题+小字两行居中 */
+#btn-ach { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 9px 14px; }
+#btn-ach > span:first-child { font-size: 17px; line-height: 1.3; }
+.ach-btn-tip { font-size: 10px; color: #a07f35; white-space: nowrap; }
+
+</style>
 </head>
 <body>
   <div id="ach-toast" class="ach-toast" hidden></div>
@@ -189,9 +774,1731 @@
     </div>
   </div>
 
-  <script src="data.js"></script>
-  <script src="events.js"></script>
-  <script src="sim.js"></script>
-  <script src="game.js"></script>
+  <script>
+/* ============================================================
+ * 渡劫模拟器 · 数据文件（纯数据，逻辑在 sim.js）
+ * 天赋 · 境界 · 仙人信物 · 成就 · 常量
+ * 随机事件见 events.js
+ * ============================================================ */
+(function (root) {
+  /* 天赋名：下标 1-10（从低到高，共 10 档） */
+  var TALENTS = ['', '伪灵根', '杂灵根', '四灵根', '三灵根', '双灵根', '异灵根', '地灵根', '天灵根', '灵体', '仙体'];
+  function talentOf(lv) { return TALENTS[lv] || '伪灵根'; }
+
+  /* 境界：下标 1-10 = 炼体…渡劫，每境 10 层（共 100 层）；101 = 仙人（飞升成仙） */
+  var REALMS = ['', '炼体', '炼气', '筑基', '结丹', '元婴', '化神', '出窍', '归虚', '大乘', '渡劫'];
+  function realmOf(lvl) {
+    if (lvl >= 101) return '仙人';
+    var r = Math.floor((lvl - 1) / 10) + 1;
+    if (r < 1) r = 1; if (r > 10) r = 10;
+    return REALMS[r];
+  }
+  function layerOf(lvl) {
+    if (lvl >= 101) return '';
+    return ((lvl - 1) % 10) + 1;
+  }
+  var CN_NUM = ['', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十'];
+  function titleOf(lvl) {
+    if (lvl >= 101) return '仙人';
+    return realmOf(lvl) + CN_NUM[layerOf(lvl)] + '层';
+  }
+
+  /* 天赋抽取权重（用户规则：高阶 = 天赋 >5）
+   * 天赋6=5% 7=4% 8=3% 9=2% 10=1%（合计15%），天赋1-5 合计 85%（按原比例 50:25:12.5:6.25:3.125 归一化）。
+   * 玩家等级会在此基础提升高阶天赋（6-10）的整体概率 */
+  var INNATE_WEIGHTS = [
+    0, 33.0, 25.0, 11.0, 9.0, 7.0, 5.0, 4.0, 3.0, 2.0, 1.0
+  ];
+
+  /* 修为系数：下标 = 天赋等级（1-10）。天赋越高每级加修为越多 */
+  var CULT_COEF = [0, 1.0, 1.5, 2.2, 3.2, 4.5, 6.3, 8.8, 12, 16, 22];
+
+  /* 突破年数表（单位：年，可 <1）
+   * 值 V 表示「需要 V 年突破」，年突破概率 = 1/V；如 300 → 每年 1/300，0.5 → 每年 200%（可连破）。
+   * 行 = 天赋等级 1-10；列 = 等级段：1-10 / 11-20 / 21-30 / 31-40 / 41-50 / 51-60 / 61-70 / 71-80 / 81-90 / 91-95 / 96-98 / 99-100
+   * ⚠ 原表保持原样（数值由创作者自行修改），仅解读方式从「百分比」改为「年数」 */
+  var BREAK_CHANCE = [
+    [4, 20, 50, 120, 300, 800, 2000, 4000, 10000, 16000, 24000, 30000],   /* 天赋1 ×20（速度5%） */
+    [2, 10, 25, 60, 150, 400, 1000, 2000, 5000, 8000, 12000, 15000],  /* 天赋2 ×10（速度10%） */
+    [1.3, 6.7, 17, 40, 100, 267, 667, 1333, 3333, 5333, 8000, 10000], /* 天赋3 ×6.67（速度15%） */
+    [0.95, 4.8, 12, 29, 71, 190, 476, 952, 2381, 3810, 5714, 7143],/* 天赋4 ×4.76（速度21%） */
+    [0.8, 4, 10, 24, 60, 160, 400, 800, 2000, 3200, 4800, 6000],/* 天赋5 ×4（速度25%） */
+    [0.65, 3.2, 8.1, 19, 48, 129, 323, 645, 1613, 2581, 3871, 4839],/* 天赋6 ×3.23（速度31%） */
+    [0.51, 2.6, 6.4, 15, 38, 103, 256, 513, 1282, 2051, 3077, 3846],/* 天赋7 ×2.56（速度39%） */
+    [0.41, 2, 5.1, 12, 31, 82, 204, 408, 1020, 1633, 2449, 3061],/* 天赋8 ×2.04（速度49%） */
+    [0.32, 1.6, 4, 9.5, 24, 63, 159, 317, 794, 1270, 1905, 2381],/* 天赋9 ×1.59（速度63%） */
+    [0.2, 1, 2.5, 6, 15, 40, 100, 200, 500, 800, 1200, 1500] /* 天赋10 基准 */
+  ];
+
+  /* 大境界突破寿元奖励：下标 = 境界（1=炼气 … 9=渡劫）
+   * 小境界（层）突破不加寿元，只有从上一境界十层突破到本境界一层才加。
+   * 炼体为初始寿元（60-100），不入此表 */
+  var LIFESPAN_GAIN = [
+    null,           /* 0 占位 */
+    [20, 30],       /* 炼气 */
+    [80, 100],      /* 筑基 */
+    [200, 240],     /* 结丹 */
+    [400, 500],     /* 元婴 */
+    [800, 1000],    /* 化神 */
+    [1000, 1200],   /* 出窍 */
+    [1500, 1800],   /* 归虚 */
+    [2400, 3600],   /* 大乘 */
+    [4000, 6000]    /* 渡劫 */
+  ];
+
+  /* 仙人信物（10 种）：渡劫期（≥91级）后每年按 XINWU_CHANCE 获得，最多 1 种
+   * 修为需求设到约 P95（≈28w-45w），让约 5% 有信物修士飞升达标；不达标可渡劫飞升。
+   * rate 修为增幅倍率：成仙修为 = (100w 成仙奖励 + 原基础修为) × rate；
+   * 无信物（渡劫飞升/仙帝传承）rate 恒为 1 */
+  var XINWU = [
+    { id: 'hszx',   name: '火德仙君信物——三昧真火', needCult: 180000, rate: 1.29 },
+    { id: 'syqlx',  name: '木灵仙尊信物——青帝木髓',   needCult: 190000, rate: 1.38 },
+    { id: 'bhsyz',  name: '水元仙尊信物——太一真水', needCult: 200000, rate: 1.47 },
+    { id: 'qsxh',   name: '金精仙尊信物——庚金之精',   needCult: 210000, rate: 1.56 },
+    { id: 'tsjys',  name: '土德仙君信物——戊土之精',   needCult: 220000, rate: 1.65 },
+    { id: 'tqlgx',  name: '雷部天君信物——九霄神雷', needCult: 230000, rate: 1.74 },
+    { id: 'lcmw',   name: '剑仙信物——诛仙剑胎',   needCult: 240000, rate: 1.83 },
+    { id: 'hsxg',   name: '丹仙信物——九转金丹',     needCult: 250000, rate: 1.92 },
+    { id: 'smgjs',  name: '阵仙信物——周天星斗图', needCult: 260000, rate: 2.01 },
+    { id: 'xlzt',   name: '龙仙信物——真龙之珠',   needCult: 270000, rate: 2.1 }
+  ];
+
+  /* 成就系统（20 个）：达成后按 bonus 累加高阶天赋（天赋6-10）抽取概率。
+   * id 唯一标识（原有 id 保留，K-V 状态不丢）；name 成就名；bonus 高阶天赋加成（百分点）。 */
+  var ACHIEVEMENTS = [
+    { id: 'innate10', name: '天生仙体',   bonus: 0.1 },
+    { id: 'yibian',   name: '灵根异变',   bonus: 0.1 },
+    { id: 'hunsheng', name: '成就归虚',   bonus: 0.1 },
+    { id: 'hundou',   name: '成就大乘', bonus: 0.1 },
+    { id: 'feng91',   name: '成就渡劫',   bonus: 0.1 },
+    { id: 'chaoji',   name: '渡劫后期',   bonus: 0.1 },
+    { id: 'lim99',    name: '渡劫巅峰',   bonus: 0.2 },
+    { id: 'shiwan',   name: '十万修为',   bonus: 0.1 },
+    { id: 'sanshiwan', name: '三十万修为', bonus: 0.2 },
+    { id: 'million',  name: '百万修为',   bonus: 0.3 },
+    { id: 'xinwu',    name: '仙人信物',   bonus: 0.1 },
+    { id: 'god',      name: '飞升成仙',   bonus: 0.2 },
+    { id: 'dujie',    name: '渡过成仙劫',   bonus: 0.3 },
+    { id: 'god3',     name: '三次飞升',   bonus: 0.3 },
+    { id: 'god10',    name: '十次飞升',   bonus: 0.4 },
+    { id: 'god30',    name: '三十次飞升', bonus: 0.5 },
+    { id: 'god50',    name: '五十次飞升', bonus: 0.8 },
+    { id: 'god100',   name: '百次飞升',   bonus: 1 },
+    { id: 'xitong',   name: '系统傍身',   bonus: 1 },
+    { id: 'xiandi',   name: '仙帝传承',   bonus: 1.5 }
+  ];
+
+  /* ---------- 常量 ---------- */
+  var DATA = {
+    TALENTS: TALENTS, talentOf: talentOf,
+    REALMS: REALMS, realmOf: realmOf, layerOf: layerOf, titleOf: titleOf,
+    INNATE_WEIGHTS: INNATE_WEIGHTS,
+    CULT_COEF: CULT_COEF,
+    BREAK_CHANCE: BREAK_CHANCE,
+    LIFESPAN_GAIN: LIFESPAN_GAIN,
+    XINWU: XINWU,
+    ACHIEVEMENTS: ACHIEVEMENTS,
+    /* 初始寿元（炼体）/ 初始修为区间 */
+    LIFE_MIN: 60, LIFE_MAX: 100,
+    /* 事件：每年触发概率 = EVENT_TARGET / 当前寿元上限（动态，越后期越低，一生约 30 次） */
+    EVENT_TARGET: 30,
+    /* 修行水到渠成：每年触发概率 = STEADY_TARGET / 当前寿元上限（一生约 50 次，加固定修为，不按比例） */
+    STEADY_TARGET: 50,
+    /* 仙人信物：渡劫期后每年概率（校准：获得信物整体比例约 10%） */
+    XINWU_CHANCE: 0.00003,
+    /* 渡劫飞升成功率（无信物 / 修为不足时） */
+    FEISHENG_CHANCE: 1 / 1000,
+    /* 渡劫飞升成仙修为倍率（无信物时）：随机 1.15~1.45 倍加持（仙缘才享受信物 rate） */
+    FEISHENG_BONUS_MIN: 1.15,
+    FEISHENG_BONUS_MAX: 1.45,
+    /* 特殊事件概率 */
+    XITONG_CHANCE: 5e-9,     /* 系统傍身：初始千万分之一的 5%（寿元大幅增加后下调） */
+    XIANDI_CHANCE: 5e-10,     /* 仙帝传承：初始亿分之一的 5% */
+    XIANDI_BONUS: 2,         /* 仙帝传承成仙修为倍率：2 倍 */
+    /* 玩家等级经验：升到第 n 级需 50×n 经验（累计 = 25×n×(n+1)） */
+    PLAYER_LV_BASE: 50,
+    /* 成仙直接获得经验 / 普通结算 = 境界层数×0.5 / 提前结算 = 境界层数×0.1 */
+    FEISHENG_EXP: 1000,
+    EXP_PER_LVL: 0.5,
+    EXP_PER_LVL_EARLY: 0.1
+  };
+
+  if (typeof module !== 'undefined' && module.exports) module.exports = DATA;
+  root.DATA = DATA;
+})(typeof self !== 'undefined' ? self : this);
+
+</script>
+  <script>
+/* ============================================================
+ * 渡劫模拟器 · 随机事件（独立文件，创作者可自由扩展）
+ *
+ * 如何添加新事件：在 EVENTS 数组末尾 push 一个对象，字段：
+ *   id    事件唯一标识（字符串）
+ *   name  事件名（展示用，如 '冰火淬体'）
+ *   tier  稀有度：1普通 / 2中级 / 3稀有 / 4传说（决定奖励档次与日志颜色）
+ *   weight 触发权重（越大越常出现；当前按 1普通=6 / 2中级=0.7 / 3稀有=0.2 / 4传说=0.08）
+ *   minAge/maxAge 年龄上下限（年龄不在该区间则该事件不参与抽取，默认 minAge=0 / maxAge=10000）
+ *   cond  触发条件函数 cond(g) -> bool，null 表示无条件
+ *   ok    条件达成奖励 ok(g, U) -> 返回结果文本字符串（无返回则无事发生）
+ *   fail  条件未达成惩罚 fail(g, U) -> 返回结果文本字符串
+ *
+ * U 是引擎注入的工具对象，提供：
+ *   U.rand(a,b) / U.irand(a,b) / U.round(x)
+ *   U.cultGain(aptitude,newLvl) 突破加修为  U.lifespanGain(newLvl) 突破加行动点
+ *   U.gainLevels(g,n) 事件直接加境界层数（渡劫十层后每层+10000修为）
+ *   U.evCult(g, minPct, maxPct, floor) 事件修为增益 = 当前修为×比例（保底 floor）
+ *   U.breakChance(aptitude,lvl) 突破概率  U.DATA 数据常量（U.DATA.talentOf 取天赋名）
+ *
+ * 奖励与 tier 匹配：普通事件小收益，稀有/传说事件才有大奖励与资质提升。
+ * 数组按 tier 从高到低排序（传说→稀有→中级→普通），便于阅读与维护。
+ * ============================================================ */
+(function (root) {
+	var EVENTS = [
+
+		/* ---------- tier 4 传说 ---------- */
+		{
+			id: 'erjue',
+			weight: 0.65,
+			maxCount: 2,
+			name: '灵根进化',
+			tier: 4,
+			desc: '沉寂多年的灵根突然进化',
+			minAge: 12,
+			maxAge: 1000000,
+			cond:
+				function (g, U) {
+					return g.lvl >= Math.min(50, Math.floor(g.age * 0.75)) + U.irand(0, 10);
+				},
+			ok:
+				function (g, U, log) {
+					var lf = U.lifeGain(g, 80, 120);
+					g.lifespan += lf;
+					U.printlog('灵根成功进化，行动点+' + lf + ',修为也有很大精进');
+					U.gainLevels(g, U.irand(1, 3), log);
+				},
+			fail:
+				function (g, U) {
+					var lf = U.irand(15, 35);
+					g.lifespan -= lf;
+					U.printlog('修为不足，灵根失控，灵力逆流，重伤，行动点 -' + lf);
+				}
+		},
+		{
+			id: 'yibian',
+			weight: 0.05,
+			maxCount: 1,
+			name: '灵根异变',
+			tier: 4,
+			desc: '你那平凡的灵根意外发生异变，发生巨大蜕变',
+			minAge: 6,
+			maxAge: 12,
+			cond:
+				function (g) {
+					return g.innate <= 6;   /* 仅先天天赋 ≤6 可触发；>6 不触发 */
+				},
+			ok:
+				function (g, U, log) {
+					var n = U.drawHighTalent(g);   /* 从天赋7-10抽取并替换天赋/先天/资质 */
+					var lf = U.lifeGain(g, 80, 120);
+					g.lifespan += lf;
+					U.printlog('灵根异变为『' + n.talent + '』！先天灵根提升至 ' + n.innate + ' 级，行动点+' + lf + '，修为也有很大精进');
+					U.gainLevels(g, U.irand(1, 3), log);
+				},
+			fail: null   /* 不会失败：先天>6 不触发，≤6 必成功 */
+		},
+		{
+			id: 'xuejin',
+			weight: 0.3,
+			maxCount: 1,
+			name: '仙界残境',
+			tier: 4,
+			desc: '闯入机缘与凶险并存的仙界残境，寻找机缘',
+			minAge: 30,
+			maxAge: 1000000,
+			cond:
+				function (g, U) {
+					return g.cult > U.testCult(8, g.age, 20, 15) || g.lvl > U.testLv(8, g.age, 20, 15);
+				},
+			ok:
+				function (g, U, log) {
+					var c = U.evCult(g, 0.1, 0.2, 2000);
+					g.cult += c;
+					U.printlog('在仙界残境杀出重围，夺得大量宝物，修为额外+' + c + ',修为也大幅提升');
+					U.gainLevels(g, U.irand(1, 3), log);
+				},
+			fail:
+				function (g, U) {
+					g.dead = true;
+					U.printlog('实力不足，惨死于仙界残境');
+				}
+		},
+		{
+			id: 'lingcao',
+			weight: 0.3,
+			maxCount: 1,
+			name: '获得仙草',
+			tier: 4,
+			desc: '意外寻得一株源自仙界的仙草，可脱胎换骨',
+			minAge: 0,
+			maxAge: 1000000,
+			cond: null,
+			ok:
+				function (g, U, log) {
+					var lf = U.lifeGain(g, 80, 120);
+					g.lifespan += lf;
+					var up = null;
+					if (g.aptitude < 10) {
+						up = g.aptitude + U.irand(1, 3);
+						if(up < 6){
+							up = 6;
+						}
+						if (up > 10) up = 10;
+						g.aptitude = up;
+					}
+					U.printlog('服下仙草，脱胎换骨，行动点+' + lf + (up ? '，灵根提升至' + U.DATA.talentOf(up) + '！' : ''));
+					U.gainLevels(g, U.irand(1, 3), log);
+				},
+			fail: null
+		},
+		{
+			id: 'binghuo',
+			weight: 0.7,
+			maxCount: 2,
+			name: '上古宗门遗迹',
+			tier: 4,
+			desc: '偶遇上古宗门遗迹，包含大量资源',
+			minAge: 0,
+			maxAge: 1000000,
+			cond: null,
+			ok:
+				function (g, U, log) {
+					var lf = U.lifeGain(g, 60, 100);
+					g.lifespan += lf;
+					var up = null;
+					if (g.aptitude < 10) {
+						up = g.aptitude + U.irand(1, 2);
+						if(up < 5){
+							up = 5;
+						}
+						if (up > 10) up = 10;
+						g.aptitude = up;
+					}
+					U.printlog('炼化大量资粮，行动点+' + lf + (up ? '，灵根提升至' + U.DATA.talentOf(up) + '！' : '') + '修为也有所精进');
+					U.gainLevels(g, U.irand(2, 3), log);
+				},
+			fail: null
+		},
+		/* ---------- tier 3 稀有 ---------- */
+		{
+			id: 'dabi',
+			weight: 2,
+			maxCount: 2,
+			name: '宗门大比',
+			tier: 3,
+			desc: '参加宗门举办的大比',
+			minAge: 15,
+			maxAge: 30,
+			cond:
+				function (g, U) {
+					return g.lvl >= Math.min(40, Math.floor(g.age * 0.75)) + U.irand(0, 10);
+				},
+			ok:
+				function (g, U, log) {
+					var c = U.evCult(g, 0.075, 0.15, 1500);
+					g.cult += c;
+					U.printlog('宗门大比夺魁，修为+' + c + ',修为也有所精进');
+					U.gainLevels(g, U.irand(1, 2), log);
+				},
+			fail:
+				function (g, U) {
+					var lf = U.irand(10, 20);
+					g.lifespan -= lf;
+					U.printlog('大比受挫重伤，行动点 -' + lf);
+				}
+		},
+		{
+			id: 'shenhai',
+			weight: 2,
+			maxCount: 3,
+			name: '藏宝之地',
+			tier: 3,
+			desc: '执行宗门任务时，偶遇一处藏宝之地',
+			minAge: 0,
+			maxAge: 1000000,
+			cond: null,
+			ok:
+				function (g, U, log) {
+					var c = U.evCult(g, 0.05, 0.1, 1250);
+					g.cult += c;
+					var lf = U.irand(20, 40);
+					g.lifespan += lf;
+					U.printlog('探索藏宝之地，大有收获，修为+' + c + '，行动点+' + lf);
+					U.gainLevels(g, U.irand(1, 2), log);
+				},
+			fail: null
+		},
+		{
+			id: 'linggu',
+			weight: 1,
+			maxCount: 3,
+			name: '获得妖丹',
+			tier: 3,
+			desc: '猎杀妖兽后意外获得一颗妖丹',
+			minAge: 0,
+			maxAge: 1000000,
+			cond:
+				function (g, U) {
+					return g.lvl >= Math.min(35, Math.floor(g.age * 0.75)) + U.irand(0, 10);
+				},
+			ok:
+				function (g, U, log) {
+					var c = U.evCult(g, 0.05, 0.125, 1500);
+					g.cult += c;
+					U.printlog('炼化珍贵妖丹，修为+' + c);
+					U.gainLevels(g, U.irand(1, 2), log);
+				},
+			fail:
+				function (g, U) {
+					var lf = U.irand(10, 25);
+					g.lifespan -= lf;
+					U.printlog('妖丹被魔道修士抢走，还把你打成重伤，行动点 -' + lf);
+				}
+		},
+		{
+			id: 'xingkong',
+			weight: 1,
+			maxCount: 5,
+			name: '顿悟玄机',
+			tier: 3,
+			desc: '夜观天象，顿悟天地玄机',
+			minAge: 0,
+			maxAge: 1000000,
+			cond: null,
+			ok:
+				function (g, U, log) {
+					var c = U.evCult(g, 0.05, 0.1, 1000);
+					g.cult += c;
+					var lf = U.irand(20, 40);
+					g.lifespan += lf;
+					U.printlog('观星顿悟，修为+' + c + '，行动点+' + lf);
+					U.gainLevels(g, 1, log);
+				},
+			fail: null
+		},
+		{
+			id: 'lingdan',
+			weight: 1,
+			maxCount: 3,
+			name: '上古灵丹',
+			tier: 3,
+			desc: '寻得一颗可提升资质的上古灵丹',
+			minAge: 0,
+			maxAge: 1000000,
+			cond: null,
+			ok:
+				function (g, U, log) {
+					if (g.aptitude <= 6) {
+						var up = g.aptitude + U.irand(1, 2);
+						if (up > 10) up = 10;
+						g.aptitude = up;
+						U.printlog('服下上古灵丹，脱胎换骨，灵根提升至' + U.DATA.talentOf(up) + '！');
+						return;
+					}
+					U.printlog('服下上古灵丹，可惜资质深厚无益，只感灵力有所提升');
+					U.gainLevels(g, 1, log);
+				},
+			fail: null
+		},
+		{
+			id: 'gongfa',
+			weight: 1,
+			maxCount: 3,
+			name: '太古功法',
+			tier: 3,
+			desc: '寻得一份可提升资质的太古功法',
+			minAge: 0,
+			maxAge: 1000000,
+			cond: null,
+			ok:
+				function (g, U, log) {
+					if (g.aptitude <= 8) {
+						var up = g.aptitude + 1;
+						if (up > 10) up = 10;
+						g.aptitude = up;
+						U.printlog('修炼太古功法，茅塞顿开，灵根提升至' + U.DATA.talentOf(up) + '！');
+						return;
+					}
+					U.printlog('修炼太古功法，可惜收获甚微，只感修为有所精进');
+					U.gainLevels(g, 1, log);
+				},
+			fail: null
+		},
+
+		/* ---------- tier 2 中级 ---------- */
+		{
+			id: 'chuancheng',
+			weight: 5,
+			maxCount: 3,
+			name: '前辈传承',
+			tier: 2,
+			desc: '一位前辈的残魂指引你传承衣钵',
+			minAge: 0,
+			maxAge: 1000000,
+			cond:
+				function (g, U) {
+					return g.lvl >= Math.min(25, Math.floor(g.age * 0.75)) + U.irand(0, 10);
+				},
+			ok:
+				function (g, U, log) {
+					if (g.lvl < 100) {
+						U.printlog('继承前辈衣钵，获益良多');
+						U.gainLevels(g, 1, log);
+						return;
+					}
+					var c2 = U.evCult(g, 0.04, 0.08, 750);
+					g.cult += c2;
+					U.printlog('继承前辈衣钵，修为+' + c2);
+				},
+			fail:
+				function (g, U) {
+					var lf = U.irand(8, 18);
+					g.lifespan -= lf;
+					U.printlog('修为不足，未通过考核，传承失败，还受了重伤，行动点 -' + lf);
+				}
+		},
+		{
+			id: 'yaodan',
+			weight: 5,
+			maxCount: 10,
+			name: '残次品丹药',
+			tier: 2,
+			desc: '拍卖会上，购买到一颗残次品丹药，思量片刻，终是服用',
+			minAge: 12,
+			maxAge: 1000000,
+			cond:
+				function (g, U) {
+					return g.lvl >= Math.min(40, Math.floor(g.age * 0.75)) + U.irand(0, 10);
+				},
+			ok:
+				function (g, U) {
+					var c = U.evCult(g, 0.03, 0.06, 500);
+					g.cult += c;
+					U.printlog('顺利炼化丹药，修为+' + c);
+				},
+			fail:
+				function (g, U) {
+					var lf = U.irand(5, 12);
+					g.lifespan -= lf;
+					U.printlog('丹药有毒，伤害到了你的本源，行动点 -' + lf);
+				}
+		},
+		{
+			id: 'zongmen',
+			weight: 5,
+			maxCount: 5,
+			name: '魔道冲突',
+			tier: 2,
+			desc: '魔道修士飞扬跋扈，与你发生冲突，你惨遭追杀',
+			minAge: 12,
+			maxAge: 1000000,
+			cond:
+				function (g, U) {
+					return g.lvl >= Math.min(30, Math.floor(g.age * 0.75)) + U.irand(0, 10);
+				},
+			ok:
+				function (g, U) {
+					var c = U.evCult(g, 0.025, 0.05, 500);
+					g.cult += c;
+					U.printlog('反杀魔道追兵，夺得大量宝物和典籍，修为+' + c);
+				},
+			fail:
+				function (g, U) {
+					var lf = U.irand(8, 20);
+					g.lifespan -= lf;
+					U.printlog('被魔道修士重创，行动点 -' + lf);
+				}
+		},
+		{
+			id: 'shouchao',
+			weight: 5,
+			maxCount: 10,
+			name: '妖兽潮',
+			tier: 2,
+			desc: '不幸遭遇妖兽大潮，无数妖兽席卷而来',
+			minAge: 0,
+			maxAge: 1000000,
+			cond:
+				function (g, U) {
+					return g.lvl >= Math.min(25, Math.floor(g.age * 0.75)) + U.irand(0, 10);
+				},
+			ok:
+				function (g, U) {
+					var c = U.evCult(g, 0.02, 0.045, 350);
+					g.cult += c;
+					U.printlog('奋力战斗，侥幸击退妖兽潮，战斗中有所领悟，修为+' + c);
+				},
+			fail:
+				function (g, U) {
+					var lf = U.irand(8, 20);
+					g.lifespan -= lf;
+					U.printlog('被妖兽潮吞没，重伤，行动点 -' + lf);
+				}
+		},
+		{
+			id: 'shentong',
+			weight: 5,
+			maxCount: 50,
+			name: '领悟神通',
+			tier: 2,
+			desc: '苦思多年，一朝领悟强大神通',
+			minAge: 0,
+			maxAge: 1000000,
+			cond:
+				function (g, U) {
+					return g.lvl >= Math.min(30, Math.floor(g.age * 0.75)) + U.irand(0, 10);
+				},
+			ok:
+				function (g, U) {
+					var c = U.evCult(g, 0.015, 0.03, 250);
+					g.cult += c;
+					U.printlog('领悟神通，修为+' + c);
+				},
+			fail:
+				function (g, U) {
+					var lf = U.irand(5, 15);
+					g.lifespan -= lf;
+					U.printlog('修炼神通时，不幸走火入魔，行动点 -' + lf);
+				}
+		},
+		{
+			id: 'zhaomu',
+			weight: 5,
+			maxCount: 5,
+			name: '名门招募',
+			tier: 2,
+			desc: '名门大派向你抛出橄榄枝',
+			minAge: 0,
+			maxAge: 1000000,
+			cond:
+				function (g, U) {
+					return g.lvl >= Math.min(30, Math.floor(g.age * 0.75)) + U.irand(0, 10);
+				},
+			ok:
+				function (g, U, log) {
+					var c = U.evCult(g, 0.01, 0.02, 200);
+					g.cult += c;
+					U.printlog('加入宗门，获得大量交流的机会与资源，修为+' + c);
+					if (g.lvl < 50 && Math.random() < 0.5) {
+						U.printlog('加入宗门后，你加倍苦修，有所成就');
+						U.gainLevels(g, 1, log);
+					}
+				},
+			fail:
+				function (g, U) {
+					var c = U.evCult(g, 0.003, 0.005, 50);
+					g.cult += c;
+					U.printlog('宗门没有看上你，但念你诚心，好心指点几句，修为+' + c);
+				}
+		},
+
+		/* ---------- tier 1 普通 ---------- */
+		{
+			id: 'lieyao',
+			weight: 20,
+			maxCount: 100,
+			name: '猎妖遇险',
+			tier: 1,
+			desc: '猎杀妖兽',
+			minAge: 30,
+			maxAge: 1000000,
+			cond:
+				function (g, U) {
+					return g.lvl >= Math.min(25, Math.floor(g.age * 0.75)) + U.irand(0, 10);
+				},
+			ok:
+				function (g, U) {
+					var c = U.evCult(g, 0.005, 0.01, 150);
+					g.cult += c;
+					U.printlog('搏杀妖兽，修为+' + c);
+				},
+			fail:
+				function (g, U) {
+					var lf = U.irand(3, 8);
+					g.lifespan -= lf;
+					U.printlog('险些被妖兽撕碎，行动点 -' + lf);
+				}
+		},
+		{
+			id: 'caiyao',
+			weight: 10,
+			maxCount: 20,
+			name: '采药遇险',
+			tier: 1,
+			desc: '深山采药，偶遇凶猛妖兽',
+			minAge: 20,
+			maxAge: 1000000,
+			cond:
+				function (g, U) {
+					return g.lvl >= Math.min(15, Math.floor(g.age * 0.75)) + U.irand(0, 10);
+				},
+			ok:
+				function (g, U) {
+					var c = U.evCult(g, 0.003, 0.006, 50);
+					g.cult += c;
+					var lf = U.irand(5, 10);
+					g.lifespan += lf;
+					U.printlog('采得灵药，行动点+' + lf + '，修为+' + c);
+				},
+			fail:
+				function (g, U) {
+					var lf = U.irand(2, 6);
+					g.lifespan -= lf;
+					U.printlog('被妖兽所伤，仓皇而逃，行动点 -' + lf);
+				}
+		},
+		{
+			id: 'bishi',
+			weight: 20,
+			maxCount: 100,
+			name: '同辈切磋',
+			tier: 1,
+			desc: '与同龄修士切磋较量',
+			minAge: 12,
+			maxAge: 1000000,
+			cond:
+				function (g, U) {
+					return g.lvl >= Math.min(10, Math.floor(g.age * 0.75)) + U.irand(0, 10);
+				},
+			ok:
+				function (g, U) {
+					var c = U.evCult(g, 0.004, 0.007, 75);
+					g.cult += c;
+					U.printlog('切磋获胜，修为+' + c);
+				},
+			fail:
+				function (g, U) {
+					var lf = U.irand(2, 5);
+					g.lifespan -= lf;
+					U.printlog('切磋落败受创，行动点 -' + lf);
+				}
+		},
+		{
+			id: 'ganwu',
+			weight: 20,
+			maxCount: 100,
+			name: '略有感悟',
+			tier: 1,
+			desc: '修炼中，略有感悟',
+			minAge: 0,
+			maxAge: 1000000,
+			cond: null,
+			ok:
+				function (g, U) {
+					var c = U.evCult(g, 0.003, 0.005, 50);
+					g.cult += c;
+					U.printlog('修为+' + c);
+				},
+			fail: null
+		}
+	];
+
+	if (typeof module !== 'undefined' && module.exports) module.exports = EVENTS;
+	root.EVENTS = EVENTS;
+})(typeof self !== 'undefined' ? self : this);
+
+</script>
+  <script>
+/* ============================================================
+ * 渡劫模拟器 · 模拟引擎（纯逻辑，浏览器 + Node 通用，UMD）
+ * 逐年修炼 · 突破年数表（连破规则）· 随机事件 · 渡劫飞升成仙
+ * 天赋/境界/信物：data.js  随机事件：events.js（创作者可扩展）
+ * ============================================================ */
+(function (root, factory) {
+  if (typeof module !== 'undefined' && module.exports)
+    module.exports = factory(require('./data.js'), require('./events.js'));
+  else root.Sim = factory(root.DATA, root.EVENTS);
+})(typeof self !== 'undefined' ? self : this, function (D, E) {
+
+  function rand(a, b) { return a + Math.random() * (b - a); }
+  function irand(a, b) { return Math.floor(rand(a, b + 1)); }
+  function round(x) { return Math.round(x); }
+
+  /* ---------- 抽取天赋：先按权重抽天赋等级，再取对应天赋名 ----------
+   * 玩家等级 lv 奖励：天赋 5-10 级整体概率 +lv×0.1 个百分点（如 lv1：20%→20.1%），
+   * 增量按各级原比例分配，其余等级仍按原比例 */
+  /* 高阶天赋增益（百分点）：点赞+0.2 收藏+0.3 投币+0.5 关注+1.5，作者本人全享受=2.5
+   * 分配规则：高阶（天赋6-10）总概率提升到 pNew 后，内部按原权重比例各自提高；
+   * 低级（天赋1-5）权重不变，自动按原比例平分剩余的 100%-pNew */
+  var _followBonus = 0;
+  function setFollowBonus(pct) { _followBonus = pct || 0; }
+  /* 成就加成（百分点）：各达成成就 bonus 累加，叠加到高阶天赋抽取概率 */
+  var _achBonus = 0;
+  function setAchBonus(pct) { _achBonus = pct || 0; }
+
+  /* 抽取天赋：高阶 = 天赋 6-10。玩家等级 lv 奖励：高阶天赋整体概率 +lv×0.1 个百分点 */
+  function drawTalent(playerLv) {
+    var lv = Math.max(0, playerLv || 0);
+    var base = D.INNATE_WEIGHTS;
+    var s15 = 0, s610 = 0, i;
+    for (i = 1; i <= 5; i++) s15 += base[i];
+    for (i = 6; i <= 10; i++) s610 += base[i];
+    var pOld = s610 / (s15 + s610);
+    var pNew = pOld + lv * 0.001 + _followBonus / 100 + _achBonus / 100;   /* +玩家等级 与 互动/成就增益 */
+    var x610 = (s15 * pNew) / (1 - pNew);       /* 高阶（6-10）新权重合计 */
+    var w = base.slice();
+    for (i = 6; i <= 10; i++) w[i] = base[i] * (x610 / s610);
+    var total = 0; for (i = 1; i <= 10; i++) total += w[i];
+    var r = Math.random() * total, acc = 0, innate = 1;
+    for (i = 1; i <= 10; i++) { acc += w[i]; if (r < acc) { innate = i; break; } }
+    return { innate: innate, talent: D.talentOf(innate) };
+  }
+
+  /* ---------- 突破年数表：查 data.js 的 BREAK_CHANCE 二维数组（单位：年） ----------
+   * 段：1-10 / 11-20 / 21-30 / 31-40 / 41-50 / 51-60 / 61-70 / 71-80 / 81-90 / 91-95 / 96-98 / 99-100 */
+  function breakChance(aptitude, lvl) {
+    var seg;
+    if (lvl >= 99) seg = 11;
+    else if (lvl >= 96) seg = 10;
+    else if (lvl >= 91) seg = 9;
+    else if (lvl >= 81) seg = 8;
+    else if (lvl >= 71) seg = 7;
+    else if (lvl >= 61) seg = 6;
+    else if (lvl >= 51) seg = 5;
+    else if (lvl >= 41) seg = 4;
+    else if (lvl >= 31) seg = 3;
+    else if (lvl >= 21) seg = 2;
+    else if (lvl >= 11) seg = 1;
+    else seg = 0;
+    var years = D.BREAK_CHANCE[aptitude - 1][seg];
+    return 1 / years;   /* 年数 → 年突破概率（years<1 时概率 >1，可连破） */
+  }
+
+  /* 某年突破判定：若概率 >25% 允许连破（每次概率 ×0.6 折损 40%，直到 ≤25% 停止）
+   * 连破每次重新取「该级所在阶级」的基础概率再递减 */
+  /* 突破年龄系数：6-12岁×1.2；12-18岁×1.1；18~0.8×行动点×1.0；>0.8×行动点×0.9 */
+  function breakAgeCoef(g) {
+    if (g.age <= 12) return 1.2;
+    if (g.age <= 18) return 1.1;
+    if (g.age > g.lifespan * 0.8) return 0.9;
+    return 1.0;
+  }
+  function attemptBreak(g) {
+    if (g.lvl >= 100) return 0;
+    var coef = breakAgeCoef(g);
+    var base = breakChance(g.aptitude, g.lvl) * coef;
+    if (base <= 0.25 + 1e-9) {
+      /* 基础概率 ≤25%：单次判定，不连破 */
+      return Math.random() < base ? 1 : 0;
+    }
+    /* 基础概率 >25%：连破。每次按「该级所属阶级」的基础概率 ×0.6^(step) 递减（折损40%），≤25% 停 */
+    var gained = 0, step = 0;
+    while (true) {
+      var lvl = g.lvl + gained;
+      if (lvl >= 100) break;
+      var b = breakChance(g.aptitude, lvl) * coef;
+      if (b <= 0.25 + 1e-9) break;              /* 连破跨入基础 ≤25% 的阶级，停止 */
+      var p = b * Math.pow(0.6, step);           /* 第 step 次连破判定（step 从 0 起，折损 40%） */
+      if (p <= 0.25 + 1e-9) break;               /* 递减后 ≤25% 停止 */
+      if (Math.random() < p) { gained++; step++; }
+      else break;
+    }
+    return gained;
+  }
+
+  /* ---------- 突破收益：境界越高、天赋越高加得越多，且每层随机波动明显（±40%） ---------- */
+  function cultGain(aptitude, newLvl) {
+    var c = D.CULT_COEF[aptitude];
+    if (newLvl >= 100) return round(c * (newLvl * 1.2 + rand(-200, 200) + 200));
+    if (newLvl >= 91 && newLvl <= 99) return round(c * (newLvl * 0.6 + rand(-newLvl * 0.4, newLvl * 0.4) + 20));
+    return round(c * (newLvl * 0.6 + rand(-newLvl * 0.4, newLvl * 0.4) + 6));
+  }
+  /* 突破后行动点奖励：小境界（层）不加，仅从上一境界十层突破到本境界一层时加（见 data.js LIFESPAN_GAIN） */
+  /* 突破后行动点：大境界（十层→下一境一层）加该境界全值；小境界（层内）加当前大境界区间随机值的 1/100（四舍五入） */
+  function lifespanGain(newLvl) {
+    var realmIdx = Math.floor((newLvl - 1) / 10);   /* 0=炼体 1=炼气 … 9=渡劫 */
+    var g = D.LIFESPAN_GAIN[realmIdx];
+    if (!g) return 0;
+    var v = irand(g[0], g[1]);
+    if (newLvl > 1 && newLvl % 10 === 1) return v;      /* 大境界突破：全值 */
+    return round(v * 0.01);                              /* 小境界突破：1/100 */
+  }
+
+  /* ---------- 随机事件修为增益 helper（按当前修为比例，后期事件才有效果） ----------
+   * evCult(g, minPct, maxPct, floor)：加修为 = 当前修为 × (minPct~maxPct)，保底 floor */
+  function evCult(g, minPct, maxPct, floor) {
+    var v = g.cult * rand(minPct, maxPct);
+    if (v < (floor || 0)) v = floor || 0;
+    return round(v);
+  }
+
+  /* ---------- t4 大机缘行动点：基础 baseMin~baseMax，境界越高加成越多（炼体≈100，渡劫≈300+，不崩坏） ---------- */
+  function lifeGain(g, baseMin, baseMax) {
+    var extra = Math.round((g.lifespan - 80) * 0.02);
+    return irand(baseMin, baseMax) + extra;
+  }
+
+
+  /* 升级方法：升 1 层自动判定修为/行动点增益（cultGain + lifespanGain）；
+   * 已至渡劫十层（100）后不再升层，改为「参悟天道，修为 +10000」。
+   * 返回 { text, cult, life, peak } */
+  function levelUp(g) {
+    if (g.lvl >= 100) {
+      g.cult += 10000;
+      return { text: '渡劫十层圆满，参悟天道，修为+10000！', cult: 10000, life: 0, peak: true };
+    }
+    var nl = g.lvl + 1;
+    var cg = cultGain(g.aptitude, nl);
+    var lg = lifespanGain(nl);
+    g.lvl = nl; g.cult += cg; g.lifespan += lg;
+    return { text: '突破至' + D.titleOf(nl) + '！修为+' + cg + (lg ? '，行动点+' + lg : '') + '！', cult: cg, life: lg };
+  }
+
+  /* 事件连续升级：每升 1 层单独输出一行（与突破连破一致，日志不省略、不合并）；
+   * 渡劫十层后每层 +10000 修为单独一行。返回累计 { up, cult, life } */
+  function gainLevels(g, n, log) {
+    var up = 0, ct = 0, life = 0;
+    for (var k = 0; k < n; k++) {
+      var r = levelUp(g);
+      up++; ct += r.cult; life += r.life;
+      if (log) log.push({ cls: 'brk', text: r.text });
+    }
+    return { up: up, cult: ct, life: life };
+  }
+
+  /* 事件打印：事件内部直接调用 U.printlog('结果文本') 打印「第X岁，遇到事件名，结果文本」，
+   * 让事件自行控制打印与升级的相对顺序（先打印机缘，再升级） */
+  var _curEv = null;
+  function printlog(text) {
+    if (!_curEv) return;
+    _curEv.printed = true;
+    if (_curEv.log) _curEv.log.push({ cls: 'ev' + _curEv.ev.tier, text: '第' + _curEv.g.age + '岁，遇到' + _curEv.ev.name + '，结果' + text });
+  }
+
+  /* 灵根异变：按天赋 7-10 权重（INNATE_WEIGHTS：7=4 / 8=3 / 9=2 / 10=1）抽取，
+   * 替换天赋/天赋等级/资质，返回新天赋信息 */
+  function drawHighTalent(g) {
+    var wsum = 0, i;
+    for (i = 7; i <= 10; i++) wsum += D.INNATE_WEIGHTS[i];
+    var r = Math.random() * wsum, acc = 0, ni = 7;
+    for (i = 7; i <= 10; i++) { acc += D.INNATE_WEIGHTS[i]; if (r < acc) { ni = i; break; } }
+    g.innate = ni; g.aptitude = ni;
+    g.gotYibian = true;   /* 成就：灵根异变 */
+    return { innate: ni, talent: D.talentOf(ni) };
+  }
+
+  /* 注入给事件文件（events.js）的工具对象，供创作者扩展事件时使用 */
+  var U = {
+    rand: rand, irand: irand, round: round,
+    cultGain: cultGain, lifespanGain: lifespanGain,
+    gainLevels: gainLevels, levelUp: levelUp, evCult: evCult, lifeGain: lifeGain, breakChance: breakChance,
+    drawHighTalent: drawHighTalent,
+    printlog: printlog,
+    testLv: testLv, testCult: testCult,
+    DATA: D
+  };
+
+  /* testLv/testCult 模拟中置 true，跳过会递归调用测试的仙界残境 */
+  var _testMode = false;
+
+  /* ---------- 抽 1 个随机事件执行 ----------
+   * 先按事件年龄上下限（minAge/maxAge，默认 0/10000）过滤可选池，再从池内按 weight 抽取 */
+  function rollEvent(g, log) {
+    var pool = [], i, mc = g.maxCount || (g.maxCount = {});
+    for (i = 0; i < E.length; i++) {
+      var evi = E[i];
+      if (_testMode && evi.id === 'xuejin') continue;   /* 测试模拟中跳过仙界残境（避免 test 递归） */
+      var maxN = evi.maxCount != null ? evi.maxCount : 100;
+      var left = mc[evi.id] != null ? mc[evi.id] : maxN;
+      if (left <= 0) continue;                          /* 次数耗尽，不加入候选池 */
+      var minA = evi.minAge != null ? evi.minAge : 0;
+      var maxA = evi.maxAge != null ? evi.maxAge : 10000;
+      if (g.age >= minA && g.age <= maxA) pool.push(evi);
+    }
+    if (!pool.length) return;
+    var total = 0;
+    for (i = 0; i < pool.length; i++) total += (pool[i].weight != null ? pool[i].weight : 1);
+    var r = Math.random() * total, acc = 0, ev = pool[0];
+    for (i = 0; i < pool.length; i++) { acc += (pool[i].weight != null ? pool[i].weight : 1); if (r < acc) { ev = pool[i]; break; } }
+    /* 被抽中：剩余次数 -1 */
+    var maxN2 = ev.maxCount != null ? ev.maxCount : 100;
+    mc[ev.id] = (mc[ev.id] != null ? mc[ev.id] : maxN2) - 1;
+    var text = null;
+    var prevCur = _curEv;
+    _curEv = { ev: ev, g: g, log: log, printed: false };
+    if (!ev.cond || ev.cond(g, U)) {
+      if (ev.ok) text = ev.ok(g, U, log);
+    } else {
+      if (ev.fail) text = ev.fail(g, U, log);
+    }
+    /* 事件内部用 U.printlog 打印「遇到事件」；未改用 printlog 的旧事件仍可用 return 文本兜底 */
+    if (text && !_curEv.printed) printlog(text);
+    _curEv = prevCur;   /* 恢复外层 _curEv：cond 里的 testCult 模拟局会覆盖/清空 _curEv，不恢复则本事件的 printlog 失效 */
+  }
+
+  /* ---------- 工具：模拟某天赋修炼到指定岁数的 top X% 分位数值 ----------
+   * testLv(talent, age, n, X) 返回境界层数；testCult 返回修为。
+   * 模拟 n 次，取排序后第 (100-X)% 分位（X=10 → 前 10% 的数值）。可在事件表中使用。 */
+  function testPercentile(innate, age, n, X, key) {
+    var vals = [];
+    _testMode = true;
+    for (var i = 0; i < n; i++) {
+      var g = createGame(0);
+      g.innate = innate; g.aptitude = innate;
+      var g0 = 0;
+      while (!g.dead && !g.ascended && g.age < age && g0 < 10000) { g0++; rollYear(g); }
+      vals.push(g[key]);
+    }
+    _testMode = false;
+    vals.sort(function (a, b) { return a - b; });
+    var p = 1 - X / 100;
+    var idx = Math.min(vals.length - 1, Math.max(0, Math.floor(vals.length * p)));
+    return vals[idx];
+  }
+  function testLv(innate, age, n, X) { return testPercentile(innate, age, n, X, 'lvl'); }
+  function testCult(innate, age, n, X) { return testPercentile(innate, age, n, X, 'cult'); }
+
+  /* ---------- 成仙劫成功率：看修为，越高越容易 ----------
+   * 50w以上必成；499999=10%、20w=1%、10w=1/1000、10w以下=1/10000；
+   * 499999-20w 与 20w-10w 之间线性插值。成仙劫失败即陨落（无反复尝试）。 */
+  function feishengChance(cult) {
+    /* 成仙概率整体提高 100 倍（封顶 100%）：
+     * <10万：1%（原 0.01%）；10万~25万：10%~100%（原 0.1%~1%）；
+     * ≥25万：100% 必成仙（原 25万~50万 为 1%~10%，×100 后封顶） */
+    if (cult >= 250000) return 1.0;
+    if (cult >= 100000) {
+      var t2 = (cult - 100000) / 150000;  /* 10w→25w */
+      return Math.min(1, (0.001 + t2 * (0.01 - 0.001)) * 100);
+    }
+    return 0.01;
+  }
+
+  /* 成仙修为 = (100w 成仙奖励 + 原基础修为) × 修为增幅倍率 rate；
+   * rate 为信物的修为增幅倍率；无信物（渡劫飞升/仙帝传承）rate 恒为 1 */
+  function xianCult(cult, rate) {
+    if (rate == null) rate = 1;
+    return round((1000000 + cult) * rate);
+  }
+
+  /* ---------- 飞升判定（渡劫十层，剩余行动点≤10 年时尝试） ----------
+   * 有信物先尝试仙缘（修为达标成功成仙，享受信物 rate 修为倍率；失败则再尝试渡劫飞升）。
+   * 渡劫飞升不享受信物 rate，统一随机 1.15~1.45 倍加持；渡劫失败即陨落死亡（无宽限、无反复尝试）。 */
+  function tryFeisheng(g, log) {
+    var xw = g.xinwu.length > 0 ? g.xinwu[0] : null;   /* 信物最多 1 种 */
+    var rate = xw ? xw.rate : 1;                       /* 仙缘才用信物 rate */
+    if (xw) {
+      if (g.cult >= xw.needCult) {
+        g.ascendMode = 'xianyuan';
+        log.push({ cls: 'god', text: '第' + g.age + '岁，行动点将尽，仙缘已至，飞升成仙！' });
+        g.ascended = true; g.lvl = 101;
+        g.cult = xianCult(g.cult, rate); g.lifespan = 999999;
+        return true;
+      }
+      log.push({ cls: 'ev3', text: '第' + g.age + '岁，可惜修为不足，未能最终获得仙人青睐，只能转而渡劫' });
+    }
+    if (Math.random() < feishengChance(g.cult)) {
+      g.ascendMode = 'feisheng';
+      log.push({ cls: 'god', text: '第' + g.age + '岁，行动点将尽，渡过成仙劫，羽化登仙！' });
+      g.ascended = true; g.lvl = 101;
+      var dRate = D.FEISHENG_BONUS_MIN + Math.random() * (D.FEISHENG_BONUS_MAX - D.FEISHENG_BONUS_MIN);   /* 渡劫飞升：随机 1.15~1.45 */
+      g.cult = xianCult(g.cult, dRate); g.lifespan = 999999;
+      return true;
+    }
+    g.dead = true;
+    g.ascendMode = 'fail';
+    log.push({ cls: 'dead', text: '第' + g.age + '岁，成仙劫失败，身陨天劫之下' });
+    return true;
+  }
+
+  /* ---------- 初始化一局 ---------- */
+  function createGame(playerLv) {
+    var t = drawTalent(playerLv);
+    return {
+      innate: t.innate,        /* 先天天赋：固定，不增加 */
+      aptitude: t.innate,      /* 资质：初始 = 先天天赋，可被灵药/机缘提升，上限 10 */
+      lvl: 1,                   /* 初始境界：炼体一层（无跳级，大家都从这里开始） */
+      cult: irand(t.innate, t.innate * 10),
+      lifespan: irand(D.LIFE_MIN, D.LIFE_MAX),
+      age: 6,
+      year: 0,
+      xinwu: [],
+      maxCount: {},   /* 各事件本局剩余触发次数（maxCount 上限，每次被抽中 -1，耗尽后不再出现） */
+      ascended: false,
+      dead: false
+    };
+  }
+
+  /* ---------- 过一年，返回今年日志条目 ----------
+   * 年份太多：平淡年份（无突破、无事件）不产生日志，只返回空数组；
+   * 突破/事件/奇遇/飞升/死亡单独成行。 */
+  function rollYear(g) {
+    var log = [];
+    g.year++;
+    g.age++;
+
+    /* 特殊事件：仙帝传承（亿分之一）无视条件直接成仙 */
+    if (Math.random() < D.XIANDI_CHANCE) {
+      log.push({ cls: 'rainbow', text: '第' + g.age + '岁，仙帝降临，获得仙帝传承，直接飞升成仙！' });
+      g.ascendMode = 'xiandi';
+      g.ascended = true; g.lvl = 101;
+      g.cult = xianCult(g.cult, D.XIANDI_BONUS);
+      g.lifespan = 999999;
+      return log;
+    }
+    /* 特殊事件：获得神秘系统（系统傍身，千万分之一）天赋提升到仙体 + 行动点+50 */
+    if (Math.random() < D.XITONG_CHANCE) {
+      g.aptitude = 10;
+      g.lifespan += 50;
+      g.gotXitong = true;   /* 成就：系统傍身 */
+      log.push({ cls: 'red', text: '第' + g.age + '岁，获得神秘系统！脱胎换骨，灵根提升至仙体，行动点+50' });
+    }
+
+    /* 渡劫期（≥91级）后每年概率获得仙人信物：最多获得 1 种，获得后不再获得第二种 */
+    if (g.lvl >= 91 && g.xinwu.length < 1 && Math.random() < D.XINWU_CHANCE) {
+      var got = D.XINWU[Math.floor(Math.random() * D.XINWU.length)];
+      g.xinwu.push(got);
+      log.push({ cls: 'red', text: '第' + g.age + '岁，获得仙人信物『' + got.name + '』' });
+    }
+
+    /* 修炼突破：第一层「成功突破！」头行，每升 1 层输出升级行，跨层前补「连破！」头行；
+     * 未突破年份不加修为（渡劫期行动点超长，按比例复利会爆炸；平淡年份也不记录日志） */
+    if (g.lvl < 100) {
+      var gained = attemptBreak(g);
+      if (gained > 0) {
+        log.push({ cls: 'brk', text: '第' + g.age + '岁，修炼，成功突破！' });
+        for (var k = 0; k < gained; k++) {
+          var r = levelUp(g);
+          log.push({ cls: 'brk', text: r.text });
+          if (k + 1 < gained && g.lvl < 100) log.push({ cls: 'brk', text: '第' + g.age + '岁，修炼，连破！' });
+          if (g.lvl >= 100) break;
+        }
+      }
+      /* 平淡年份：不加修为、不记录 */
+    }
+
+    /* 修行中水到渠成：每年按 50/行动点max 概率，加最初版斗罗的战力数值（千分之几随机，有保底） */
+    if (Math.random() < (D.STEADY_TARGET / g.lifespan)) {
+      var sInc = evCult(g, 0.001, 0.0015, rand(5, 10));
+      g.cult += sInc;
+      log.push({ cls: 'gain', text: '第' + g.age + '岁，修行中水到渠成，修为有所提升，+' + sInc + '！' });
+    }
+
+    /* 渡劫十层（100级）剩余行动点 <=10 年时尝试飞升；渡劫失败即陨落 */
+    if (g.lvl >= 100 && !g.ascended && (g.lifespan - g.age) <= 10) {
+      if (tryFeisheng(g, log)) return log;
+    }
+
+    /* 行动点判定放在突破/飞升之后：先结算突破（突破会加行动点），行动点将尽那年仍可突破/飞升 */
+    if (g.age > g.lifespan) {
+      g.dead = true;
+      g.deadCause = 'age';
+      log.push({ cls: 'dead', text: '第' + g.age + '岁，行动点耗尽，坐化' });
+      return log;
+    }
+
+    /* 普通随机事件（动态概率：一生约 EVENT_TARGET 次，越后期概率越低） */
+    if (!g.ascended && Math.random() < (D.EVENT_TARGET / g.lifespan)) rollEvent(g, log);
+
+    /* 事件可能导致扣行动点致死（行动点最后一年遇凶险）：标记为意外暴毙，区别于自然寿终 */
+    if (g.age > g.lifespan) {
+      g.dead = true;
+      g.deadCause = 'accident';
+      log.push({ cls: 'dead', text: '第' + g.age + '岁，遭遇不测，不幸暴毙' });
+    }
+    return log;
+  }
+
+  return {
+    drawTalent: drawTalent,
+    setFollowBonus: setFollowBonus,
+    setAchBonus: setAchBonus,
+    breakChance: breakChance,
+    attemptBreak: attemptBreak,
+    cultGain: cultGain,
+    lifespanGain: lifespanGain,
+    feishengChance: feishengChance,
+    xianCult: xianCult,
+    gainLevels: gainLevels,
+    testLv: testLv, testCult: testCult,
+    createGame: createGame,
+    rollYear: rollYear,
+    tryFeisheng: tryFeisheng,
+    EVENTS: E
+  };
+});
+
+</script>
+  <script>
+/* ============================================================
+ * 渡劫模拟器 · UI 逻辑（本地版）
+ * 与原版完全一致：测灵根 · 自动逐年修炼 · 本地排行榜 · 音效 · 暂停
+ * 本地化差异：原版 B站SDK 相关（云端榜/云同步/关注增益/二维码）改为本地实现
+ * ============================================================ */
+(function () {
+  /* ---------- 工具 ---------- */
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function fmt(n) {
+    n = Math.floor(n);
+    if (n >= 1e8) return (n / 1e8).toFixed(1).replace(/\.0$/, '') + '亿';
+    if (n >= 1e4) return (n / 1e4).toFixed(1).replace(/\.0$/, '') + '万';
+    return String(n);
+  }
+  function pad2(x) { return (x < 10 ? '0' : '') + x; }
+  function fmtTime(ts) {
+    var d = new Date(ts), now = new Date();
+    var hm = pad2(d.getHours()) + ':' + pad2(d.getMinutes());
+    if (d.toDateString() === now.toDateString()) return '今天 ' + hm;
+    if (d.getFullYear() === now.getFullYear()) return pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()) + ' ' + hm;
+    return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()) + ' ' + hm;
+  }
+
+  /* ---------- 音效（WebAudio） ---------- */
+  var SOUND = true;
+  var KEY_SOUND = 'fc_sound';
+  var KEY_SPEED = 'fc_speed';
+  var audioCtx = null;
+  function ensureAudio() {
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+    } catch (e) {}
+  }
+  function blip(freq, dur, type, vol) {
+    if (!SOUND) return;
+    try {
+      ensureAudio();
+      var o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = type || 'sine'; o.frequency.value = freq;
+      g.gain.setValueAtTime(vol || 0.1, audioCtx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+      o.connect(g); g.connect(audioCtx.destination);
+      o.start(); o.stop(audioCtx.currentTime + dur);
+    } catch (e) {}
+  }
+  function loadSound() { try { SOUND = localStorage.getItem(KEY_SOUND) !== '0'; } catch (e) {} }
+  function saveSound() { try { localStorage.setItem(KEY_SOUND, SOUND ? '1' : '0'); } catch (e) {} }
+  function syncSoundUI() {
+    var hs = $('home-sound'); if (hs) hs.checked = SOUND;
+  }
+
+  /* ---------- 本地统计：测灵根人次 / 当日飞升（原版读 B站榜，本地版存 localStorage） ---------- */
+  var KEY_PLAYS = 'fc_plays';
+  var KEY_ASCEND_DAY = 'fc_ascend_day';
+  function loadPlays() { try { return parseInt(localStorage.getItem(KEY_PLAYS) || '0', 10) || 0; } catch (e) { return 0; } }
+  function addPlay() {
+    var n = loadPlays() + 1;
+    try { localStorage.setItem(KEY_PLAYS, String(n)); } catch (e) {}
+    var el = $('home-count'); if (el) el.textContent = fmt(n);
+  }
+  function todayStr() { var d = new Date(); return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
+  function loadAscendDay() {
+    try {
+      var o = JSON.parse(localStorage.getItem(KEY_ASCEND_DAY) || '{"date":"","n":0}');
+      if (o.date === todayStr()) return o.n || 0;
+      return 0;
+    } catch (e) { return 0; }
+  }
+  function addAscendDay() {
+    var n = loadAscendDay() + 1;
+    try { localStorage.setItem(KEY_ASCEND_DAY, JSON.stringify({ date: todayStr(), n: n })); } catch (e) {}
+  }
+  function refreshHomeCounts() {
+    var p = $('home-count'); if (p) p.textContent = fmt(loadPlays());
+    var a = $('home-ascend-count'); if (a) a.textContent = String(loadAscendDay());
+  }
+
+  /* ---------- 玩家等级（经验升级，本地存储；原版云端同步去掉） ---------- */
+  var PLAYER_KEY = 'fc_player';
+  var player = { lv: 0, exp: 0 };
+  function loadPlayer() {
+    try {
+      var o = JSON.parse(localStorage.getItem(PLAYER_KEY) || '{"lv":0,"exp":0}');
+      player = (o && typeof o.lv === 'number') ? o : { lv: 0, exp: 0 };
+    } catch (e) { player = { lv: 0, exp: 0 }; }
+  }
+  function savePlayer() { try { localStorage.setItem(PLAYER_KEY, JSON.stringify(player)); } catch (e) {} }
+  function needExp() { return DATA.PLAYER_LV_BASE * (player.lv + 1); }
+  function addExp(amount) {
+    player.exp += amount;
+    var need = needExp();
+    while (player.exp >= need) { player.exp -= need; player.lv++; need = needExp(); }
+    savePlayer();
+    renderPlayerUI();
+  }
+  function renderPlayerUI() {
+    if (!$('home-lv')) return;
+    var need = needExp();
+    $('home-lv').textContent = '[Lv.' + player.lv + ']';
+    $('home-lv-bonus').textContent = '[抽到高阶灵根概率+' + (player.lv * 0.1).toFixed(1) + '%]';
+    $('home-lv-exp').textContent = player.exp + '/' + need;
+    $('home-lv-fill').style.width = Math.min(100, (player.exp / need) * 100) + '%';
+  }
+
+  /* ---------- 本地排行榜（修为/行动点/境界 top100） ---------- */
+  var LOCAL_BOARDS = {
+    cult: { key: 'fc_local_cult', name: '修为' },
+    age:    { key: 'fc_local_life',   name: '行动点' },
+    lvl:    { key: 'fc_local_lvl',    name: '境界' }
+  };
+  function loadLocalList(key) {
+    try { var a = JSON.parse(localStorage.getItem(key) || '[]'); return Array.isArray(a) ? a : []; } catch (e) { return []; }
+  }
+  function saveLocalList(key, list) { try { localStorage.setItem(key, JSON.stringify(list.slice(0, 100))); } catch (e) {} }
+  function insertLocal(key, score) {
+    var list = loadLocalList(key);
+    var ts = Date.now();
+    list.push({ score: score, ts: ts });
+    list.sort(function (a, b) { return b.score - a.score || a.ts - b.ts; });
+    if (list.length > 100) list = list.slice(0, 100);
+    saveLocalList(key, list);
+    var rank = list.length + 1;
+    for (var i = 0; i < list.length; i++) { if (list[i].score === score && list[i].ts === ts) { rank = i + 1; break; } }
+    return { rank: rank, total: list.length };
+  }
+
+  /* ---------- 全局状态 ---------- */
+  var G = null;
+  var timer = null;
+  var TICK_MS = 300;   /* 一年时长（默认 0.3s，可由设置页滑块 0.1~1s 调整） */
+  var FAST_MS = 60;    /* 连破升级行之间的快速间隔：连续弹出、无停顿 */
+  var settleReason = '';
+  var fullLog = [];    /* 本局全部日志（回顾人生用） */
+  var pendingLogs = [];  /* 逐年逐条弹出的日志队列 */
+
+  /* ---------- 视图切换 ---------- */
+  function show(v) {
+    var views = document.querySelectorAll('.view'), i;
+    for (i = 0; i < views.length; i++) views[i].hidden = views[i].id !== 'view-' + v;
+    if (v === 'home') refreshHomeCounts();   /* 每次回首页自动刷新本地人次/成仙人数 */
+  }
+  /* ---------- 设置页（可从首页/暂停进入，关闭返回来源） ---------- */
+  var settingsReturn = 'home';
+  function openSettings(from) {
+    settingsReturn = from;
+    $('pause-mask').hidden = true;
+    show('settings');
+  }
+  function closeSettings() {
+    if (settingsReturn === 'pause') { show('game'); $('pause-mask').hidden = false; }
+    else show('home');
+  }
+  function hideMask() { $('pause-mask').hidden = true; }
+
+  /* ---------- 首页 ---------- */
+  function refreshHome() {
+    $('home-count').textContent = '--';
+    renderPlayerUI();
+    syncSoundUI();
+    refreshHomeCounts();
+  }
+
+  /* ---------- 开始游戏：测灵根 → 直接进入游戏页（第6岁测灵根） ---------- */
+  function startGame() {
+    ensureAudio(); blip(660, 0.08, 'triangle', 0.1);
+    G = Sim.createGame(player.lv);
+    $('game-title').textContent = DATA.talentOf(G.innate) + '/' + G.innate;
+    renderAttrs();
+    $('log-box').innerHTML = '';
+    pendingLogs = [];   /* 清空上一局残留的连破日志队列，避免新局回放旧日志 */
+    var first = [];
+    if (G.innate >= 8) first.push({ cls: 'rare', text: '第6岁，天生奇才！先天灵根 ' + DATA.talentOf(G.innate) });
+    first.push({ cls: 'brk', text: '第6岁，测灵根，为『' + DATA.talentOf(G.innate) + '』！先天灵根 ' + G.innate + ' 级，修为 ' + G.cult });
+    fullLog = [];
+    for (var fi = 0; fi < first.length; fi++) fullLog.push(first[fi]);
+    renderLog(first);
+    show('game');
+    startPlay();
+    addPlay();   /* 每开一局测灵根人次 +1 */
+  }
+  function startPlay() { stopPlay(); playTick(); }
+  function stopPlay() { if (timer) { clearTimeout(timer); timer = null; } }
+  /* 自调度主循环：有待弹的连破日志时用 FAST_MS 连续弹出（无停顿），否则按一年 TICK_MS */
+  function playTick() {
+    var gap = pendingLogs.length ? FAST_MS : TICK_MS;
+    timer = setTimeout(function () {
+      if (!timer) return;
+      tick();
+      if (timer) playTick();
+    }, gap);
+  }
+  function setSpeed() {
+    var r = $('speed-range'); if (!r) return;
+    var v = parseFloat(r.value);
+    $('speed-val').textContent = v.toFixed(1) + 's';
+    TICK_MS = Math.round(v * 1000);
+    try { localStorage.setItem(KEY_SPEED, String(v)); } catch (e) {}   /* 速度持久化 */
+    if (timer) { stopPlay(); startPlay(); }   /* 播放中调整速度即时生效 */
+  }
+  function loadSpeed() {
+    try {
+      var v = parseFloat(localStorage.getItem(KEY_SPEED));
+      if (isFinite(v) && v >= 0.1 && v <= 1) {
+        TICK_MS = Math.round(v * 1000);
+        var r = $('speed-range'); if (r) r.value = v;
+        var s = $('speed-val'); if (s) s.textContent = v.toFixed(1) + 's';
+      }
+    } catch (e) {}
+  }
+
+  function tick() {
+    if (pendingLogs.length) {
+      /* 还有本年的日志没弹完：逐条追加显示 */
+      renderLog([pendingLogs.shift()]);
+      renderAttrs();
+      if (!pendingLogs.length && (G.dead || G.ascended)) { stopPlay(); finishGame(G.dead ? 'dead' : 'god'); }
+      return;
+    }
+    /* 快进：跳过无突破、无事件的平淡年份（年份太多，直接去掉），只停在有日志的年份 */
+    var log = [], guard = 0;
+    do {
+      log = Sim.rollYear(G);
+      guard++;
+    } while (log.length === 0 && !G.dead && !G.ascended && guard < 100000);
+    for (var i = 0; i < log.length; i++) fullLog.push(log[i]);
+    renderAttrs();
+    /* 只有连破（多条突破升级）才逐条弹出；普通日志（含单次升级/事件）立即显示 */
+    var brkCount = 0, j;
+    for (j = 0; j < log.length; j++) if (log[j].cls === 'brk') brkCount++;
+    if (brkCount > 1) {
+      /* 连破逐条弹出「后弹在最上面」：机缘行（ev）在 log 中靠前先弹 → 显示在下面（下面=先发生），
+       * 升级行后弹 → 在上面，正符合「先机缘、后升级」 */
+      pendingLogs = log.slice();
+      if (pendingLogs.length) renderLog([pendingLogs.shift()]);
+    } else {
+      renderLog(log);
+    }
+    if (!pendingLogs.length && (G.dead || G.ascended)) { stopPlay(); finishGame(G.dead ? 'dead' : 'god'); }
+  }
+
+  /* ---------- 渲染 ---------- */
+  function renderAttrs() {
+    $('attr-lvl').textContent = G.lvl;
+    $('attr-apt').textContent = DATA.talentOf(G.aptitude) + '/' + G.aptitude;
+    $('attr-life').textContent = G.age + '/' + G.lifespan;
+    $('attr-cult').textContent = fmt(G.cult);
+    $('attr-title').textContent = DATA.titleOf(G.lvl);
+    /* 同步天赋（灵根异变等事件会提升 aptitude） */
+    var gt = $('game-title'); if (gt) gt.textContent = DATA.talentOf(G.aptitude) + '/' + G.aptitude;
+  }
+  function renderLog(logs) {
+    var box = $('log-box');
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i < logs.length; i++) {
+      var d = document.createElement('div');
+      d.className = 'log-item' + (logs[i].cls ? ' ' + logs[i].cls : '');
+      d.textContent = logs[i].text;
+      frag.appendChild(d);
+    }
+    box.insertBefore(frag, box.firstChild);   /* 最新在上：新日志插到顶部（保留全部，供读者查看与回顾） */
+  }
+
+  /* ---------- 暂停 ---------- */
+  function pauseGame() {
+    if (!G || !timer) return;
+    stopPlay();
+    $('pause-info').textContent = '灵根 ' + DATA.talentOf(G.aptitude) + ' · ' + G.age + ' 岁 · ' + DATA.titleOf(G.lvl);
+    $('pause-mask').hidden = false;
+  }
+  function resumeGame() {
+    if (!G) return;
+    hideMask();
+    ensureAudio();
+    startPlay();
+  }
+  function exitGame() {
+    stopPlay();
+    hideMask();
+    G = null;
+    show('home');
+  }
+
+  /* ---------- 结算 ---------- */
+  function finishGame(reason) {
+    if (!G) return;
+    stopPlay(); hideMask();
+    pendingLogs = [];   /* 清空未弹完的连破日志，避免残留到下一局 */
+    settleReason = reason;
+
+    /* 本地三榜 */
+    var rC = insertLocal('fc_local_cult', G.cult);
+    var rA = insertLocal('fc_local_life', G.lifespan);
+    var rL = insertLocal('fc_local_lvl', G.lvl);
+
+    /* 本地成仙次数 / 当日飞升（原版写 B站榜，本地版存 localStorage） */
+    if (G.ascended) {
+      var total = loadFeishengTotal() + 1;
+      try { localStorage.setItem('fc_feisheng_total', total); } catch (e) {}
+      addAscendDay();
+    }
+
+    /* 结算经验：成仙 +1000；正常结算 = 境界层数×0.5；提前结算 = 境界层数×0.1 */
+    var expGain = G.ascended ? DATA.FEISHENG_EXP : Math.round(G.lvl * (reason === 'pause' ? DATA.EXP_PER_LVL_EARLY : DATA.EXP_PER_LVL));
+    addExp(expGain);
+
+    /* 渲染 */
+    var t = $('settle-title');
+    if (reason === 'god') { t.textContent = '✨ 飞升成仙 ✨'; t.className = 'settle-title god'; blip(880, 0.4, 'triangle', 0.14); }
+    else if (reason === 'dead') {
+      if (G.ascendMode === 'fail') { t.textContent = '⚡ 成仙劫失败'; blip(120, 0.4, 'sawtooth', 0.14); }
+      else if (G.deadCause === 'accident') { t.textContent = '💀 不幸暴毙'; blip(160, 0.4, 'sawtooth', 0.12); }
+      else { t.textContent = '💀 与世长辞'; blip(160, 0.4, 'sawtooth', 0.12); }
+      t.className = 'settle-title';
+    }
+    else { t.textContent = '⏸ 提前结算'; t.className = 'settle-title'; blip(400, 0.2, 'triangle', 0.1); }
+
+    $('settle-wuhun').innerHTML = '灵根 <b>' + esc(DATA.talentOf(G.innate)) + '</b> · 先天灵根 ' + G.innate + ' 级';
+    $('settle-lvl').textContent = DATA.titleOf(G.lvl);
+    $('settle-cult').textContent = fmt(G.cult);
+    /* 成仙显示「用时」（从6岁测灵根起算的修炼年数），死亡显示「享年」 */
+    $('settle-age-label').textContent = G.ascended ? '用时' : '享年';
+    $('settle-age').textContent = G.ascended ? (G.age - 6) + ' 年' : G.age + ' 岁';
+
+    /* 成仙特殊展示 */
+    var gd = $('settle-god');
+    if (G.ascended) { gd.textContent = '✨ 你已证得仙位，寿与天齐 ✨'; gd.hidden = false; }
+    else gd.hidden = true;
+
+    $('settle-exp').textContent = '+' + expGain;
+    checkAch();   /* 结算后检测成就（渡劫/信物/百万/成仙/渡劫飞升/仙帝/十次/百次） */
+
+    var xw = $('settle-xinwu');
+    if (G.xinwu && G.xinwu.length) {
+      var names = [];
+      for (var i = 0; i < G.xinwu.length; i++) names.push('『' + G.xinwu[i].name + '』');
+      xw.textContent = '仙人信物：' + names.join(' ');
+      xw.hidden = false;
+    } else { xw.hidden = true; }
+
+    /* 本地版：B站排名不可用，隐藏该条 */
+    var settleRank = $('settle-rank');
+    settleRank.hidden = true; settleRank.textContent = '';
+
+    show('settle');
+  }
+
+  /* ---------- 排行榜（本地三榜；原版有 B站 tab，本地版只保留本地榜） ---------- */
+  var curSrc = 'local', curBoard = 'cult', curPeriod = 'all';
+  function openRank() {
+    curSrc = 'local'; curBoard = 'cult'; curPeriod = 'all';
+    setRankUI();
+    show('rank');
+    loadRank();
+  }
+  function makeTab(parent, active, label, cb) {
+    var b = document.createElement('button');
+    b.className = 'tab' + (active ? ' active' : '');
+    b.textContent = label;
+    b.addEventListener('click', function () { cb(); });
+    parent.appendChild(b);
+  }
+  function setRankUI() {
+    var src = $('rank-src'); src.innerHTML = '';
+    makeTab(src, curSrc === 'local', '本地', function () { curSrc = 'local'; curBoard = 'cult'; curPeriod = 'all'; setRankUI(); loadRank(); blip(500, 0.06, 'triangle', 0.08); });
+
+    var board = $('rank-board'); board.innerHTML = '';
+    var boards = [['cult', '修为'], ['age', '行动点'], ['lvl', '境界']];
+    boards.forEach(function (p) {
+      makeTab(board, curBoard === p[0], p[1], function () { curBoard = p[0]; setRankUI(); loadRank(); });
+    });
+
+    var per = $('rank-period');
+    per.hidden = true;
+    per.innerHTML = '';
+  }
+  function loadRank() { loadLocalRank(); }
+  function loadLocalRank() {
+    var note = $('rank-note'), body = $('rank-body');
+    var b = LOCAL_BOARDS[curBoard];
+    var list = loadLocalList(b.key);
+    if (!list.length) { note.textContent = '暂无成绩 · 快去玩一局吧'; body.innerHTML = '<div class="lb-tip">暂无成绩</div>'; return; }
+    var best = 0, bi = 0, i;
+    for (i = 0; i < list.length; i++) if (list[i].score > best) { best = list[i].score; bi = i; }
+    note.textContent = '我的最佳：' + fmt(best) + ' · 第 ' + (bi + 1) + ' 名';
+    var h = '';
+    for (i = 0; i < list.length; i++) {
+      var it = list[i], rk = i + 1;
+      var cls = 'lb-rank' + (rk <= 3 ? ' top r' + rk : '');
+      var scoreTxt = fmt(it.score);
+      if (curBoard === 'lvl') scoreTxt = DATA.titleOf(it.score);
+      h += '<div class="lb-row' + (i === bi ? ' me' : '') + '"><span class="' + cls + '">' + rk + '</span>' +
+        '<span class="lb-user"><span class="lb-name">我的成绩</span></span>' +
+        '<span class="lb-time">' + fmtTime(it.ts) + '</span>' +
+        '<span class="lb-score">' + scoreTxt + '</span></div>';
+    }
+    body.innerHTML = h;
+  }
+
+  /* ---------- 成就系统（本地存储；原版云端同步去掉） ---------- */
+  var KEY_ACH = 'fc_ach';
+  var ach = {};            /* 已达成成就 id 集合（内存） */
+
+  function achBonus() {
+    var sum = 0, i;
+    for (i = 0; i < DATA.ACHIEVEMENTS.length; i++) if (ach[DATA.ACHIEVEMENTS[i].id]) sum += DATA.ACHIEVEMENTS[i].bonus;
+    return Math.round(sum * 100) / 100;   /* 归一化：避免 0.30000000000000004 浮点尾差 */
+  }
+  function loadAchLocal() {
+    try { var o = JSON.parse(localStorage.getItem(KEY_ACH) || '{}'); ach = (o && typeof o === 'object') ? o : {}; } catch (e) { ach = {}; }
+  }
+  function saveAchLocal() { try { localStorage.setItem(KEY_ACH, JSON.stringify(ach)); } catch (e) {} }
+  function markAch(id) {
+    if (ach[id]) return;
+    ach[id] = true; saveAchLocal();
+    var nm = id;
+    for (var i = 0; i < DATA.ACHIEVEMENTS.length; i++) if (DATA.ACHIEVEMENTS[i].id === id) { nm = DATA.ACHIEVEMENTS[i].name; break; }
+    showAchToast(nm);
+    applyAch();
+  }
+  /* 成就达成面包屑提示（顶部滑入，队列依次展示，避免多个重叠） */
+  var achToastQueue = [], achToastBusy = false;
+  function showAchToast(name) {
+    achToastQueue.push(name);
+    if (!achToastBusy) achToastNext();
+  }
+  function achToastNext() {
+    if (!achToastQueue.length) { achToastBusy = false; return; }
+    achToastBusy = true;
+    var name = achToastQueue.shift();
+    var el = $('ach-toast');
+    if (el) {
+      el.textContent = '⭐ 成就达成：' + name;
+      el.hidden = false;
+      el.classList.remove('show');
+      void el.offsetWidth;   /* 强制重排触发动画 */
+      el.classList.add('show');
+    }
+    setTimeout(function () {
+      var el2 = $('ach-toast');
+      if (el2) { el2.classList.remove('show'); setTimeout(function () { el2.hidden = true; }, 300); }
+      achToastBusy = false;
+      achToastNext();
+    }, 2200);
+  }
+  function applyAch() {
+    Sim.setAchBonus(achBonus());
+    var tip = $('ach-tip'); if (tip) tip.textContent = '成就增加高阶灵根概率：' + achBonus() + '%';
+    var total = $('ach-total'); if (total) total.textContent = '成就加成：+' + achBonus() + '%';
+    renderAchList();
+  }
+  /* 结算时检测本局可触发的成就 */
+  function checkAch() {
+    if (!G) return;
+    if (G.innate === 10) markAch('innate10');
+    if (G.lvl >= 71) markAch('hunsheng');
+    if (G.lvl >= 81) markAch('hundou');
+    if (G.lvl >= 91) markAch('feng91');
+    if (G.lvl >= 95) markAch('chaoji');
+    if (G.lvl >= 100) markAch('lim99');
+    if (G.cult >= 100000) markAch('shiwan');
+    if (G.cult >= 300000) markAch('sanshiwan');
+    if (G.cult >= 1000000) markAch('million');
+    if (G.xinwu && G.xinwu.length) markAch('xinwu');
+    if (G.ascended) {
+      markAch('god');
+      if (G.ascendMode === 'feisheng') markAch('dujie');
+      if (G.ascendMode === 'xiandi') markAch('xiandi');
+    }
+    if (G.gotXitong) markAch('xitong');    /* 系统傍身：获得神秘系统 */
+    if (G.gotYibian) markAch('yibian');    /* 灵根异变：触发灵根异变 */
+    checkAchFromRank();
+  }
+  /* 成仙次数类成就（3/10/30/50/100 次）：本地（fc_feisheng_total）统计 */
+  function markFeishengCount(n) {
+    if (n >= 3) markAch('god3');
+    if (n >= 10) markAch('god10');
+    if (n >= 30) markAch('god30');
+    if (n >= 50) markAch('god50');
+    if (n >= 100) markAch('god100');
+  }
+  function loadFeishengTotal() { try { return parseInt(localStorage.getItem('fc_feisheng_total') || '0', 10) || 0; } catch (e) { return 0; } }
+  function checkAchFromRank() {
+    var localN = loadFeishengTotal();
+    markFeishengCount(localN);
+  }
+  function renderAchList() {
+    var box = $('ach-list'); if (!box) return;
+    box.innerHTML = '';
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i < DATA.ACHIEVEMENTS.length; i++) {
+      var a = DATA.ACHIEVEMENTS[i], done = !!ach[a.id];
+      var d = document.createElement('div');
+      d.className = 'ach-item ' + (done ? 'done' : 'todo');
+      var nm = document.createElement('span'); nm.className = 'ach-name'; nm.textContent = a.name;
+      var b = document.createElement('span'); b.className = 'ach-bonus'; b.textContent = (done ? '✓ 已达成' : '未达成') + ' +' + a.bonus + '%';
+      d.appendChild(nm); d.appendChild(b);
+      frag.appendChild(d);
+    }
+    box.appendChild(frag);
+  }
+  function openAch() {
+    blip(500, 0.06, 'triangle', 0.08);
+    applyAch();
+    show('ach');
+  }
+  function closeAch() { show('home'); }
+
+  /* ---------- 关注作者 / 回顾人生（本地版：关注跳转移除，点击提示） ---------- */
+  function followAuthor() {
+    var tip = $('ach-toast');
+    if (tip) {
+      tip.textContent = '本地版暂不支持关注作者';
+      tip.hidden = false;
+      tip.classList.remove('show');
+      void tip.offsetWidth;
+      tip.classList.add('show');
+      setTimeout(function () { tip.classList.remove('show'); setTimeout(function () { tip.hidden = true; }, 300); }, 1600);
+    }
+  }
+  function openReview() {
+    var box = $('review-log'); box.innerHTML = '';
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i < fullLog.length; i++) {
+      var d = document.createElement('div');
+      d.className = 'rv-' + (fullLog[i].cls || 'year');
+      d.textContent = fullLog[i].text;
+      frag.appendChild(d);
+    }
+    box.appendChild(frag);
+    $('review-mask').hidden = false;
+  }
+  function closeReview() { $('review-mask').hidden = true; }
+
+  /* ---------- 事件绑定 ---------- */
+  function bindEvents() {
+    $('btn-start').addEventListener('click', startGame);
+    $('btn-rank').addEventListener('click', function () { blip(500, 0.06, 'triangle', 0.08); openRank(); });
+    $('btn-close-rank').addEventListener('click', function () { show('home'); });
+    $('btn-ach').addEventListener('click', openAch);
+    $('btn-close-ach').addEventListener('click', function () { blip(400, 0.06, 'triangle', 0.08); closeAch(); });
+    $('btn-pause').addEventListener('click', function () { blip(400, 0.06, 'triangle', 0.08); pauseGame(); });
+    $('btn-pause-resume').addEventListener('click', function () { blip(600, 0.06, 'triangle', 0.08); resumeGame(); });
+    $('btn-pause-settle').addEventListener('click', function () { blip(500, 0.08, 'triangle', 0.1); finishGame('pause'); });
+    $('btn-pause-exit').addEventListener('click', function () { exitGame(); });
+    $('btn-settle-again').addEventListener('click', startGame);
+    $('btn-settle-review').addEventListener('click', function () { blip(500, 0.06, 'triangle', 0.08); openReview(); });
+    $('btn-review-close').addEventListener('click', function () { blip(400, 0.06, 'triangle', 0.08); closeReview(); });
+    $('btn-settle-follow').addEventListener('click', function () { blip(660, 0.08, 'triangle', 0.1); followAuthor(); });
+    $('btn-settle-home').addEventListener('click', function () { show('home'); });
+    $('home-sound').addEventListener('change', function () { SOUND = this.checked; saveSound(); syncSoundUI(); });
+    $('speed-range').addEventListener('input', setSpeed);
+    $('speed-range').addEventListener('change', setSpeed);
+    $('btn-settings').addEventListener('click', function () { blip(500, 0.06, 'triangle', 0.08); openSettings('home'); });
+    $('btn-about').addEventListener('click', function () { blip(500, 0.06, 'triangle', 0.08); show('about'); });
+    $('btn-close-settings').addEventListener('click', function () { blip(400, 0.06, 'triangle', 0.08); closeSettings(); });
+    $('btn-close-about').addEventListener('click', function () { blip(400, 0.06, 'triangle', 0.08); show('home'); });
+    $('btn-pause-settings').addEventListener('click', function () { blip(500, 0.06, 'triangle', 0.08); openSettings('pause'); });
+  }
+
+  /* ---------- 启动 ---------- */
+  loadSound();
+  loadSpeed();
+  loadPlayer();
+  loadAchLocal();
+  refreshHome();
+  bindEvents();
+  show('home');   /* 初始化视图：只显示首页，隐藏其余（否则往下滑会看到所有页面） */
+})();
+
+</script>
 </body>
 </html>
